@@ -94,8 +94,8 @@
 #define blCapUSBInterface                               0x00000002ul        // Avrdude talks over the USB for serial
 #define blCapBootLED                                    0x00000010ul        // A boot LED is driven
 #define blCapDownloadLED                                0x00000020ul        // A download LED is driven
-#define blCapAutoResetListening                         0x00000100ul        // There is a short listening delay after reset for avrdude to upload a sketch before automatically loading the in flash sketch              
-#define blCapProgramButton                              0x00000200ul        // A program button is suppored  
+#define blCapAutoResetListening                         0x00000100ul        // There is a short listening delay after reset for avrdude to upload a sketch before automatically loading the in flash sketch
+#define blCapProgramButton                              0x00000200ul        // A program button is suppored
 #define blCapVirtualProgramButton                       0x00000400ul        // A virtual program button is suppored
 #define blCapLkInstrFullFlashEraseLess4KEEProm          0x00010000ul        // The original bootloader method of erasing all of program flash except the last 4K reserved for eeprom
 #define blCapLkInstrJustInTimeFlashErase                0x00020000ul        // Only flash pages written too needed by the sketch is erased
@@ -120,7 +120,7 @@
 #define DEFAULT_EEPROM_SIZE     4096
 
 //************************************************************************
-#if defined(_BOARD_EXAMPLE_MX1_)               
+#if defined(_BOARD_EXAMPLE_MX1_)
 
 #if defined(PUT_CONFIG_BITS_HERE)
 
@@ -169,13 +169,13 @@
     // Download LED
     #define EnableDownLoadLED()     (TRISACLR = (1 << 8))
     #define DisableDownLoadLED()    (TRISASET = (1 << 8))
-    #define DownloadLED_Toggle()    (LATAINV = (1 << 8))    
+    #define DownloadLED_Toggle()    (LATAINV = (1 << 8))
     #define DownloadLED_On()        (LATASET = (1 << 8))
     #define DownloadLED_Off()       (LATACLR = (1 << 8))
 
     // Other capabilities
-    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA4 == 1) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATAbits.LATA4 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA4 == 1)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATAbits.LATA4 == 1)
     #define ClearVirtualProgramButton()             (LATACLR = (1 << 4))
 
     #define _CPU_NAME_              "32MX120F032D"
@@ -191,7 +191,7 @@
     #define BAUDRATE                115200                  // avrdude baudrate
     #define UARTMapRX()             (U1RXR = 0x1)           // RPB6 -> U1RX
     #define UARTMapTX()             (RPB7R = 0x1)           // RB7 -> U1TX
- 
+
 //************************************************************************
 #elif defined(_BOARD_CHIPKIT_UNO32_)
 
@@ -236,7 +236,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISFCLR = (1 << 0))
     #define DisableDownLoadLED()        (TRISFSET = (1 << 0))
-    #define DownloadLED_Toggle()        (LATFINV = (1 << 0))    
+    #define DownloadLED_Toggle()        (LATFINV = (1 << 0))
     #define DownloadLED_On()            (LATFSET = (1 << 0))
     #define DownloadLED_Off()           (LATFCLR = (1 << 0))
 
@@ -244,9 +244,9 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
- 
+
     #define _CPU_NAME_                  "32MX320F128H"
     #define VEND                        vendDigilent
     #define PROD                        prodChipKITUno32
@@ -301,7 +301,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISFCLR = (1 << 1))
     #define DisableDownLoadLED()        (TRISFSET = (1 << 1))
-    #define DownloadLED_Toggle()        (LATFINV = (1 << 1))    
+    #define DownloadLED_Toggle()        (LATFINV = (1 << 1))
     #define DownloadLED_On()            (LATFSET = (1 << 1))
     #define DownloadLED_Off()           (LATFCLR = (1 << 1))
 
@@ -309,9 +309,9 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
- 
+
     #define _CPU_NAME_                  "32MX320F128H"
     #define VEND                        vendDigilent
     #define PROD                        prodCerebotMX3cK128
@@ -366,7 +366,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISFCLR = (1 << 0))
     #define DisableDownLoadLED()        (TRISFSET = (1 << 0))
-    #define DownloadLED_Toggle()        (LATFINV = (1 << 0))    
+    #define DownloadLED_Toggle()        (LATFINV = (1 << 0))
     #define DownloadLED_On()            (LATFSET = (1 << 0))
     #define DownloadLED_Off()           (LATFCLR = (1 << 0))
 
@@ -374,7 +374,7 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX340F512H"
@@ -383,7 +383,7 @@
     #define F_CPU                       80000000UL
     #define F_PBUS                      F_CPU
 
-    #define FLASH_BYTES                 0x80000         // 512K   
+    #define FLASH_BYTES                 0x80000         // 512K
     #define FLASH_PAGE_SIZE             4096
     #define LoadFlashWaitStates()       (CHECON = 2)
 
@@ -431,7 +431,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISFCLR = (1 << 1))
     #define DisableDownLoadLED()        (TRISFSET = (1 << 1))
-    #define DownloadLED_Toggle()        (LATFINV = (1 << 1))    
+    #define DownloadLED_Toggle()        (LATFINV = (1 << 1))
     #define DownloadLED_On()            (LATFSET = (1 << 1))
     #define DownloadLED_Off()           (LATFCLR = (1 << 1))
 
@@ -439,22 +439,22 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
- 
+
     #define _CPU_NAME_                  "32MX340F512H"
     #define VEND                        vendDigilent
     #define PROD                        prodCerebotMX3cK512
     #define F_CPU                       80000000UL
     #define F_PBUS                      F_CPU
 
-    #define FLASH_BYTES                 0x80000         // 512K   
+    #define FLASH_BYTES                 0x80000         // 512K
     #define FLASH_PAGE_SIZE             4096
     #define LoadFlashWaitStates()       (CHECON = 2)        // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
 
 //************************************************************************
 #elif defined(_BOARD_CEREBOT_32MX4_)
- 
+
 #if defined(PUT_CONFIG_BITS_HERE)
 
     //* Oscillator Settings
@@ -465,29 +465,29 @@
     #pragma config FPLLODIV = DIV_1                                 // PLL output divider
     #pragma config FPBDIV   = DIV_1                                 // Peripheral bus clock divider
     #pragma config FSOSCEN  = ON                                    // Secondary oscillator enable
-    
+
     //* Clock control settings
     #pragma config IESO     = OFF                                   // Internal/external clock switchover
     #pragma config FCKSM    = CSECME                                // Clock switching (CSx)/Clock monitor (CMx)
     #pragma config OSCIOFNC = OFF                                   // Clock output on OSCO pin enable
-    
+
     //* USB Settings
     #pragma config UPLLEN   = ON                                    // USB PLL enable
     #pragma config UPLLIDIV = DIV_2                                 // USB PLL input divider
-    
+
     //* Other Peripheral Device settings
     #pragma config FWDTEN   = OFF                                   // Watchdog timer enable
     #pragma config WDTPS    = PS1024                                // Watchdog timer postscaler
-    
+
     //* Code Protection settings
     #pragma config CP       = OFF                                   // Code protection
     #pragma config BWP      = OFF                                   // Boot flash write protect
     #pragma config PWP      = OFF                                   // Program flash write protect
-    
+
     //* Debug settings
     #pragma config ICESEL   = ICS_PGx2                              // ICE pin selection
 #endif
-    
+
     #define CAPABILITIES    (blCapDownloadLED | blCapUARTInterface | blCapProgramButton | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
@@ -500,15 +500,15 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISBCLR = (1 << 11))
     #define DisableDownLoadLED()        (TRISBSET = (1 << 11))
-    #define DownloadLED_Toggle()        (LATBINV = (1 << 11))    
+    #define DownloadLED_Toggle()        (LATBINV = (1 << 11))
     #define DownloadLED_On()            (LATBSET = (1 << 11))
     #define DownloadLED_Off()           (LATBCLR = (1 << 11))
 
      // Other capabilities
-    #define _USE_UART1_FOR_BOOTLOADER_                                  
-    #define BAUDRATE                                115200              
-    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA6 == 1) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define _USE_UART1_FOR_BOOTLOADER_
+    #define BAUDRATE                                115200
+    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA6 == 1)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX460F512L"
@@ -523,7 +523,7 @@
 
 //************************************************************************
 #elif defined(_BOARD_CEREBOT_32MX4_USB_)
- 
+
 #if defined(PUT_CONFIG_BITS_HERE)
 
     //* Oscillator Settings
@@ -534,29 +534,29 @@
     #pragma config FPLLODIV = DIV_1                                 // PLL output divider
     #pragma config FPBDIV   = DIV_1                                 // Peripheral bus clock divider
     #pragma config FSOSCEN  = ON                                    // Secondary oscillator enable
-    
+
     //* Clock control settings
     #pragma config IESO     = OFF                                   // Internal/external clock switchover
     #pragma config FCKSM    = CSECME                                // Clock switching (CSx)/Clock monitor (CMx)
     #pragma config OSCIOFNC = OFF                                   // Clock output on OSCO pin enable
-    
+
     //* USB Settings
     #pragma config UPLLEN   = ON                                    // USB PLL enable
     #pragma config UPLLIDIV = DIV_2                                 // USB PLL input divider
-    
+
     //* Other Peripheral Device settings
     #pragma config FWDTEN   = OFF                                   // Watchdog timer enable
     #pragma config WDTPS    = PS1024                                // Watchdog timer postscaler
-    
+
     //* Code Protection settings
     #pragma config CP       = OFF                                   // Code protection
     #pragma config BWP      = OFF                                   // Boot flash write protect
     #pragma config PWP      = OFF                                   // Program flash write protect
-    
+
     //* Debug settings
     #pragma config ICESEL   = ICS_PGx2                              // ICE pin selection
 #endif
-    
+
     #define CAPABILITIES    (blCapDownloadLED | blCapUSBInterface | blCapProgramButton | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
@@ -568,16 +568,16 @@
 
     // Download LED
     #define EnableDownLoadLED()         (TRISBCLR = (1 << 11))
-    #define DisableDownLoadLED()        (TRISBSET = (1 << 11)) 
-    #define DownloadLED_Toggle()        (LATBINV = (1 << 11))    
+    #define DisableDownLoadLED()        (TRISBSET = (1 << 11))
+    #define DownloadLED_Toggle()        (LATBINV = (1 << 11))
     #define DownloadLED_On()            (LATBSET = (1 << 11))
     #define DownloadLED_Off()           (LATBCLR = (1 << 11))
 
     // Other capabilities
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA6 == 1) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA6 == 1)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX460F512L"
@@ -592,7 +592,7 @@
 
 //************************************************************************
 #elif defined(_BOARD_CEREBOT_MX4CK_)
- 
+
 #if defined(PUT_CONFIG_BITS_HERE)
 
     //* Oscillator Settings
@@ -603,29 +603,29 @@
     #pragma config FPLLODIV = DIV_1                                 // PLL output divider
     #pragma config FPBDIV   = DIV_1                                 // Peripheral bus clock divider
     #pragma config FSOSCEN  = ON                                    // Secondary oscillator enable
-    
+
     //* Clock control settings
     #pragma config IESO     = OFF                                   // Internal/external clock switchover
     #pragma config FCKSM    = CSECME                                // Clock switching (CSx)/Clock monitor (CMx)
     #pragma config OSCIOFNC = OFF                                   // Clock output on OSCO pin enable
-    
+
     //* USB Settings
     #pragma config UPLLEN   = ON                                    // USB PLL enable
     #pragma config UPLLIDIV = DIV_2                                 // USB PLL input divider
-    
+
     //* Other Peripheral Device settings
     #pragma config FWDTEN   = OFF                                   // Watchdog timer enable
     #pragma config WDTPS    = PS1024                                // Watchdog timer postscaler
-    
+
     //* Code Protection settings
     #pragma config CP       = OFF                                   // Code protection
     #pragma config BWP      = OFF                                   // Boot flash write protect
     #pragma config PWP      = OFF                                   // Program flash write protect
-    
+
     //* Debug settings
     #pragma config ICESEL   = ICS_PGx2                              // ICE pin selection
 #endif
-    
+
     #define CAPABILITIES    (blCapDownloadLED | blCapUARTInterface | blCapAutoResetListening | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
@@ -638,7 +638,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISBCLR = (1 << 11))
     #define DisableDownLoadLED()        (TRISBSET = (1 << 11))
-    #define DownloadLED_Toggle()        (LATBINV = (1 << 11))    
+    #define DownloadLED_Toggle()        (LATBINV = (1 << 11))
     #define DownloadLED_On()            (LATBSET = (1 << 11))
     #define DownloadLED_Off()           (LATBCLR = (1 << 11))
 
@@ -646,7 +646,7 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX460F512L"
@@ -715,7 +715,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISCCLR = (1 << 1))
     #define DisableDownLoadLED()        (TRISCSET = (1 << 1))
-    #define DownloadLED_Toggle()        (LATCINV = (1 << 1))    
+    #define DownloadLED_Toggle()        (LATCINV = (1 << 1))
     #define DownloadLED_On()            (LATCSET = (1 << 1))
     #define DownloadLED_Off()           (LATCCLR = (1 << 1))
 
@@ -723,7 +723,7 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX795F512L"
@@ -869,15 +869,15 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISGCLR = (1 << 13))
     #define DisableDownLoadLED()        (TRISGSET = (1 << 13))
-    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))    
+    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))
     #define DownloadLED_On()            (LATGSET = (1 << 13))
     #define DownloadLED_Off()           (LATGCLR = (1 << 13))
 
     // Other capabilities
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaProgramButton        (PORTGbits.RG6 == 1) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTGbits.RG6 == 1)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX795F512L"
@@ -946,15 +946,15 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISGCLR = (1 << 13))
     #define DisableDownLoadLED()        (TRISGSET = (1 << 13))
-    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))    
+    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))
     #define DownloadLED_On()            (LATGSET = (1 << 13))
     #define DownloadLED_Off()           (LATGCLR = (1 << 13))
 
     // Other capabilities
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaProgramButton        (PORTGbits.RG6 == 1) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTGbits.RG6 == 1)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX795F512L"
@@ -966,7 +966,7 @@
     #define FLASH_BYTES                 0x80000                     // 512K
     #define FLASH_PAGE_SIZE             4096
     #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
- 
+
 //************************************************************************
 #elif defined(_BOARD_CEREBOT_32MX7_USB_SPLIT_)
 
@@ -1023,15 +1023,15 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISGCLR = (1 << 13))
     #define DisableDownLoadLED()        (TRISGSET = (1 << 13))
-    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))    
+    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))
     #define DownloadLED_On()            (LATGSET = (1 << 13))
     #define DownloadLED_Off()           (LATGCLR = (1 << 13))
 
     // Other capabilities
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaProgramButton        (PORTGbits.RG6 == 1) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTGbits.RG6 == 1)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX795F512L"
@@ -1043,7 +1043,7 @@
     #define FLASH_BYTES                 (0x80000-4096)              // 512K less 4K for the splitflash bootloader in program flash
     #define FLASH_PAGE_SIZE             4096
     #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
- 
+
 //************************************************************************
 #elif defined(_BOARD_CEREBOT_MX7CK_)
 
@@ -1100,7 +1100,7 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISGCLR = (1 << 13))
     #define DisableDownLoadLED()        (TRISGSET = (1 << 13))
-    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))    
+    #define DownloadLED_Toggle()        (LATGINV = (1 << 13))
     #define DownloadLED_On()            (LATGSET = (1 << 13))
     #define DownloadLED_Off()           (LATGCLR = (1 << 13))
 
@@ -1108,7 +1108,7 @@
     #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
     #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
     #define BAUDRATE                    115200              // avrdude baudrate
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
     #define _CPU_NAME_                  "32MX795F512L"
@@ -1244,13 +1244,13 @@
     // Download LED
     #define EnableDownLoadLED()         (TRISECLR = (1 << 2))
     #define DisableDownLoadLED()        (TRISESET = (1 << 2))
-    #define DownloadLED_Toggle()        (LATEINV = (1 << 2))    
+    #define DownloadLED_Toggle()        (LATEINV = (1 << 2))
     #define DownloadLED_On()            (LATESET = (1 << 2))
     #define DownloadLED_Off()           (LATECLR = (1 << 2))
 
     // Other capabilities
-    #define fLoadFromAVRDudeViaProgramButton        (PORTEbits.RE7 == 0) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATEbits.LATE7 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTEbits.RE7 == 0)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATEbits.LATE7 == 1)
     #define ClearVirtualProgramButton()             (LATECLR = (1 << 7))
 
     #define _CPU_NAME_                  "32MX795F512L"
@@ -1265,7 +1265,7 @@
 
 //************************************************************************
 #elif defined(_BOARD_FUBARINO_SD_USB_)
- 
+
 #if defined(PUT_CONFIG_BITS_HERE)
 
     //* Oscillator Settings
@@ -1276,29 +1276,29 @@
     #pragma config FPLLODIV = DIV_1                                 // PLL output divider
     #pragma config FPBDIV   = DIV_1                                 // Peripheral bus clock divider
     #pragma config FSOSCEN  = OFF                                   // Secondary oscillator enable
-    
+
     //* Clock control settings
     #pragma config IESO     = OFF                                   // Internal/external clock switchover
     #pragma config FCKSM    = CSECME                                // Clock switching (CSx)/Clock monitor (CMx)
     #pragma config OSCIOFNC = OFF                                   // Clock output on OSCO pin enable
-    
+
     //* USB Settings
     #pragma config UPLLEN   = ON                                    // USB PLL enable
     #pragma config UPLLIDIV = DIV_2                                 // USB PLL input divider
-    
+
     //* Other Peripheral Device settings
     #pragma config FWDTEN   = OFF                                   // Watchdog timer enable
     #pragma config WDTPS    = PS1024                                // Watchdog timer postscaler
-    
+
     //* Code Protection settings
     #pragma config CP       = OFF                                   // Code protection
     #pragma config BWP      = OFF                                   // Boot flash write protect
     #pragma config PWP      = OFF                                   // Program flash write protect
-    
+
     //* Debug settings
     #pragma config ICESEL   = ICS_PGx2                              // ICE pin selection
 #endif
-    
+
     #define CAPABILITIES    (blCapUSBInterface | blCapProgramButton | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
@@ -1309,10 +1309,10 @@
     #define BootLED_Off()               (LATECLR = (1 << 5))
 
     // Other capabilities
-    #define fLoadFromAVRDudeViaProgramButton        (PORTEbits.RE7 == 0) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATEbits.LATE7 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTEbits.RE7 == 0)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATEbits.LATE7 == 1)
     #define ClearVirtualProgramButton()             (LATECLR = (1 << 7))
- 
+
     #define _CPU_NAME_                  "32MX440F256H"
     #define VEND                        vendFubarino
     #define PROD                        prodFubarinoSD
@@ -1385,7 +1385,7 @@
 
 //************************************************************************
 #elif defined(_BOARD_FUBARINO_MINI_USB_)
- 
+
 #if defined(PUT_CONFIG_BITS_HERE)
 
     //* Oscillator Settings
@@ -1396,27 +1396,27 @@
     #pragma config FPLLODIV = DIV_2                                 // PLL output divider
     #pragma config FPBDIV   = DIV_1                                 // Peripheral bus clock divider
     #pragma config FSOSCEN  = OFF                                   // Secondary oscillator enable
-    
+
     //* Clock control settings
     #pragma config IESO     = OFF                                   // Internal/external clock switchover
     #pragma config FCKSM    = CSECME                                // Clock switching (CSx)/Clock monitor (CMx)
     #pragma config OSCIOFNC = OFF                                   // Clock output on OSCO pin enable
-    
+
     //* USB Settings
     #pragma config UPLLEN   = ON                                    // USB PLL enable
     #pragma config UPLLIDIV = DIV_2                                 // USB PLL input divider
-    
+
     //* Other Peripheral Device settings
     #pragma config FWDTEN   = OFF                                   // Watchdog timer enable
     #pragma config WDTPS    = PS1024                                // Watchdog timer postscaler
     #pragma config WINDIS   = OFF
     #pragma config JTAGEN   = OFF                          			// JTAG port disabled
-    
+
     //* Code Protection settings
     #pragma config CP       = OFF                                   // Code protection
     #pragma config BWP      = OFF                                   // Boot flash write protect
     #pragma config PWP      = OFF                                   // Program flash write protect
-    
+
     //*    Debug settings
     #pragma config ICESEL   = ICS_PGx1                      		// ICE/ICD Comm Channel Select
     //#pragma config DEBUG    = ON                          		// DO NOT SET THIS CONFIG BIT, it will break debugging
@@ -1424,7 +1424,7 @@
     #pragma config PMDL1WAY = OFF                           		// Allow multiple reconfigurations
     #pragma config IOL1WAY  = OFF                           		// Allow multiple reconfigurations
 #endif
-    
+
     #define CAPABILITIES    (blCapSplitFlashBootloader | blCapUSBInterface | blCapProgramButton | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
@@ -1435,10 +1435,10 @@
     #define BootLED_Off()               (LATACLR = (1 << 10))
 
     // Other capabilities
-    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA8 == 0) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATAbits.LATA8 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA8 == 0)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATAbits.LATA8 == 1)
     #define ClearVirtualProgramButton()             (LATACLR = (1 << 8))
-  
+
     #define _CPU_NAME_                  "32MX250F128D"
     #define VEND                        vendFubarino
     #define PROD                        prodFubarinoMini
@@ -1450,7 +1450,7 @@
 
 //************************************************************************
 #elif defined(_BOARD_EBBV3_USB_)
- 
+
 #if defined(PUT_CONFIG_BITS_HERE)
 
     //* Oscillator Settings
@@ -1461,27 +1461,27 @@
     #pragma config FPLLODIV = DIV_2                                 // PLL output divider
     #pragma config FPBDIV   = DIV_1                                 // Peripheral bus clock divider
     #pragma config FSOSCEN  = ON                                    // Secondary oscillator enable
-    
+
     //* Clock control settings
     #pragma config IESO     = OFF                                   // Internal/external clock switchover
     #pragma config FCKSM    = CSECME                                // Clock switching (CSx)/Clock monitor (CMx)
     #pragma config OSCIOFNC = OFF                                   // Clock output on OSCO pin enable
-    
+
     //* USB Settings
     #pragma config UPLLEN   = ON                                    // USB PLL enable
     #pragma config UPLLIDIV = DIV_2                                 // USB PLL input divider
-    
+
     //* Other Peripheral Device settings
     #pragma config FWDTEN   = OFF                                   // Watchdog timer enable
     #pragma config WDTPS    = PS1024                                // Watchdog timer postscaler
     #pragma config WINDIS   = OFF
     #pragma config JTAGEN   = OFF                          			// JTAG port disabled
-    
+
     //* Code Protection settings
     #pragma config CP       = OFF                                   // Code protection
     #pragma config BWP      = OFF                                   // Boot flash write protect
     #pragma config PWP      = OFF                                   // Program flash write protect
-    
+
     //*    Debug settings
     #pragma config ICESEL   = ICS_PGx1                      		// ICE/ICD Comm Channel Select
     //#pragma config DEBUG    = ON                          		// DO NOT SET THIS CONFIG BIT, it will break debugging
@@ -1489,7 +1489,7 @@
     #pragma config PMDL1WAY = OFF                           		// Allow multiple reconfigurations
     #pragma config IOL1WAY  = OFF                           		// Allow multiple reconfigurations
 #endif
-    
+
     #define CAPABILITIES    (blCapSplitFlashBootloader | blCapUSBInterface | blCapProgramButton | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
@@ -1500,10 +1500,10 @@
     #define BootLED_Off()               (LATBCLR = (1 << 15))
 
     // Other capabilities
-    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA0 == 0) 
-    #define fLoadFromAVRDudeViaVirtualProgramButton (LATAbits.LATA0 == 1) 
+    #define fLoadFromAVRDudeViaProgramButton        (PORTAbits.RA0 == 0)
+    #define fLoadFromAVRDudeViaVirtualProgramButton (LATAbits.LATA0 == 1)
     #define ClearVirtualProgramButton()             (LATACLR = (1 << 0))
-  
+
     #define _CPU_NAME_                  "32MX250F128D"
     #define VEND                        vendSchmalzHausLLC
     #define PROD                        prodEBBv3
@@ -1611,7 +1611,7 @@
     #endif  // UART number
 #elif ((CAPABILITIES & blCapUSBInterface) == blCapUSBInterface)
     // do nothing
-#else  
+#else
     #error blCapUARTInterface or blCapUSBInterface must be assigned in CAPABILITIES
 #endif
 
@@ -1631,13 +1631,13 @@
 
 // if no virtual program button
 #if ((CAPABILITIES & blCapVirtualProgramButton) == 0)
-    #define fLoadFromAVRDudeViaVirtualProgramButton     (false) 
+    #define fLoadFromAVRDudeViaVirtualProgramButton     (false)
     #define ClearVirtualProgramButton()
 #endif
 
 // if no auto reset listen time
 #if ((CAPABILITIES & blCapAutoResetListening) == 0)
-        #define LISTEN_BEFORE_LOAD                      0 
+        #define LISTEN_BEFORE_LOAD                      0
 #endif
 
 // error checking for #defines.
@@ -1704,7 +1704,7 @@
 
 /***    static inline void __attribute__((always_inline)) InitLEDsAndButtons(void)
 **
-**    Synopsis:   
+**    Synopsis:
 **      This initializes board specific LEDs and Buttons.
 *
 **    Parameters:
@@ -1730,7 +1730,7 @@ static inline void __attribute__((always_inline)) InitLEDsAndButtons(void)
     SYSKEY = 0;
     SYSKEY = 0xAA996655;
     SYSKEY = 0x556699AA;
- 
+
     #ifdef PPS_IN_USE
 		CFGCONbits.IOLOCK = 0;            // unlock PPS; same reasoning as explicitly unlocking the processor
     #endif
@@ -1739,15 +1739,15 @@ static inline void __attribute__((always_inline)) InitLEDsAndButtons(void)
     #ifdef _ANSELA_w_POSITION
         ANSELA = 0;
     #endif
-     
+
     #ifdef _ANSELB_w_POSITION
         ANSELB = 0;
     #endif
-     
+
     #ifdef _ANSELC_w_POSITION
         ANSELC = 0;
     #endif
-     
+
     #ifdef _AD1PCFG_w_POSITION
         AD1PCFG = 0xffff;
     #endif
@@ -1767,7 +1767,7 @@ static inline void __attribute__((always_inline)) InitLEDsAndButtons(void)
 
 /***    static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
 **
-**    Synopsis:   
+**    Synopsis:
 **      This Uninitializes board specific LEDs and Buttons
 *
 **    Parameters:
@@ -1802,7 +1802,7 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
 
     #include "cdcacm.h"
     #include "usb.h"
-    
+
     #define stk500v2_isr                usb_isr
     #define stk500v2_print              usb_print
     #define UninitStk500v2Interface     usb_uninitialize
@@ -1813,7 +1813,7 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
         usb_initialize();
         cdcacm_register(null_reset_cbfn);
     }
-    
+
     // this function sends bytes to the CDC/ACM port
     static inline void __attribute__((always_inline)) usb_print(const byte *buffer, int length)
     {
@@ -1828,11 +1828,11 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
     static inline bool __attribute__((always_inline)) avrbl_receive(const byte *buffer, int length)
     {
         int i;
-    
+
         for (i = 0; i < length; i++) {
             avrbl_state_machine(buffer[i]);
         }
-    
+
         return true;
     }
 
@@ -1840,39 +1840,39 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
 #else  // using a UART
 
     #include "serial.h"
-    
+
     #define stk500v2_isr                serial_isr
     #define stk500v2_print              serial_print
-    
+
     static inline void __attribute__((always_inline)) InitStk500v2Interface(void)
     {
         // if the UART is mapped via Peripheral Pin Selection
         #if defined(USE_PPS_UART)
-    
+
             // The unlock code is documented as required yet does not seem to be needed.
             //        SYSKEY = 0;
             //        SYSKEY = 0xAA996655;
             //        SYSKEY = 0x556699AA;
             //        CFGCONbits.IOLOCK = 0;            // unlock PPS
             // End of seemingly unneeded unlock code
-        
+
             // modify PPS
             UARTMapRX();
             UARTMapTX();
-        
+
             // The lock code is documented as required yet does not seem to be needed.
             //        CFGCONbits.IOLOCK = 1;            // lock PPS
             //        SYSKEY = 0x33333333;
             // End of seemingly unneeded lock code
-    
+
         #endif
-    
+
     	//*	Init UART
     	//*	set baudrate and enable USART receiver and transmiter without interrupts
     	UMODE	=	(UART_ENABLE);
     	USTA	=	(UART_RX_ENABLE | UART_TX_ENABLE);
     	UBRG	=	((F_PBUS / (16 * BAUDRATE))-1);	// calculate actual BAUD generate value.
-    
+
     	//*	ok, the serial port is initialized, clear any data that may be there
     	while (USTAbits.URXDA)
     	{
@@ -1900,7 +1900,7 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
 
 /***    static inline void __attribute__((always_inline)) PowerOnResetDelay(void)
 **
-**    Synopsis:   
+**    Synopsis:
 **      Some boards have a MPLAB debug circuit that takes several seconds to initialize
 **      and it pulls reset several times in the process. This is a board specific sequence
 **      to determine when the last reset was pulled and then can jump to normal processeing
@@ -1947,7 +1947,7 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
     #define WaitForFinalReset()
 #elif (USE_POR_SEQUENCE == 1)         // PKOB reset skip for the MX4 & MX4 Cerebot boards
     static inline void __attribute__((always_inline)) WaitForFinalReset(void)
-    {   
+    {
         uint16 rCon = RCON & 0xC3;
         bool fClrRCONAfter1Second = false;
         uint32 tStart = _CP0_GET_COUNT();
@@ -1966,12 +1966,12 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
             default:
             // fall through, lets just assume state 1
             // this will give us the longest reset path of a min. of 9s (7s + 2s at 0xC1)
-         
-            // state 2, EXTR & BOR & POR 
+
+            // state 2, EXTR & BOR & POR
                 // sometimes state 1 is missed when there is a glitch on the reset line that is so
-                // fast that the code at state 1 does not run, or if reset comes up so slow that EXTR 
+                // fast that the code at state 1 does not run, or if reset comes up so slow that EXTR
                 // is set such as when JP11 enables the MPIDE RC auto-reset circuit.
-             
+
             // state 4, EXTR & BOR & POR; with DBG connected to MPLAB prepare for the 2nd weird reset pair
                 // when we go to state 5, EXTR & POR will be set; SWR will get cleared by the weird reset pair
 
@@ -1980,18 +1980,18 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
                 // fall thru as in either of these states if I don't get another reset
                 // with in a second, then on the next state I want to exit
 
-            // state 1, BOR and POR set, 
+            // state 1, BOR and POR set,
                 // case 1, simple boot, we will wait 7s
                 // case 2, only MPIDE is attached we will wait 6s and MPIDE will reset
                 // case 3, DBG is attached, after 20ms a reset will come in
-            case 0x3:       // state 1  
+            case 0x3:       // state 1
 
                 // wait 1 second. We do this to make sure we are not at state 1 waiting
                 // for state 2 in an MPLAB connected condition.
                 // plus we need to keep either BOR or POR set in case we have those
                 // resets every 650ms.
                 fClrRCONAfter1Second = true;
-                
+
                 // If a reset has not occured after 1 second, then we know the next
                 // state will be an exit, so clear RCON so the next state will
                 // come up as either just EXTR, or EXTR and POR (state 5)
@@ -2013,18 +2013,18 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
                 tExit = (CORE_TIMER_TICKS_PER_MILLISECOND * 1000);  // 1 second delay
                 break;
         }
-  
+
         // All LEDs are off, so toggle one out of phase with the other
         BootLED_On();
 
-        // wait for a reset or completion           
+        // wait for a reset or completion
         do
         {
-            tCur = _CP0_GET_COUNT(); 
+            tCur = _CP0_GET_COUNT();
 
             // if we wait long enough, then we know we are in a state where the next
             // state we should exit, but setting RCON to 0, the next state will be just EXTR
-            // and that will cause us to immediately exit. 
+            // and that will cause us to immediately exit.
             // except for the condition where POR gets set and gives us EXTR & POR, state 5.
             if(fClrRCONAfter1Second && ((tCur - tStart) >= (CORE_TIMER_TICKS_PER_MILLISECOND * 1000)))
             {
@@ -2039,21 +2039,21 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
                 DownloadLED_Toggle();
                 tBlink = tCur;
              }
-        } while((tCur- tStart) <= tExit); 
+        } while((tCur- tStart) <= tExit);
 
         // when we are done, clear all bits.
         RCON = 0x0;
   }
 #elif (USE_POR_SEQUENCE == 100)         // test debug for the MX7cK
     static inline void __attribute__((always_inline)) WaitForFinalReset(void)
-    {   
+    {
         uint32 tStart = _CP0_GET_COUNT();
         uint32 tCur;
 
         // Connector JA pins 1,2,3
-        TRISBCLR = (1 << 2);      
-        TRISBCLR = (1 << 3);      
-        TRISBCLR = (1 << 4);      
+        TRISBCLR = (1 << 2);
+        TRISBCLR = (1 << 3);
+        TRISBCLR = (1 << 4);
 
         LATBbits.LATB2 = RCONbits.POR;
         LATBbits.LATB3 = RCONbits.BOR;
@@ -2066,7 +2066,7 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
  }
 #elif (USE_POR_SEQUENCE == 101)         // MX7cK Logic Analyzer verification sequence
     static inline void __attribute__((always_inline)) WaitForFinalReset(void)
-    {   
+    {
         uint16 rCon = RCON & 0xC3;
         bool fClrRCONAfter1Second = false;
         uint32 tStart = _CP0_GET_COUNT();
@@ -2081,10 +2081,10 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
         LATEbits.LATE1 = 0;         // ready
 
         // set up LEDs for output
-        TRISGCLR = (1 << 12);      
-        TRISGCLR = (1 << 13);      
-        TRISGCLR = (1 << 14);      
-        TRISGCLR = (1 << 15);   
+        TRISGCLR = (1 << 12);
+        TRISGCLR = (1 << 13);
+        TRISGCLR = (1 << 14);
+        TRISGCLR = (1 << 15);
 
         // show the bits on the LEDs
         LATGbits.LATG12 = RCONbits.POR;
@@ -2093,10 +2093,10 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
         LATGbits.LATG14 = RCONbits.EXTR;
 
         // Connector JA pins 1,2,3,4
-        TRISBCLR = (1 << 2);      
-        TRISBCLR = (1 << 3);      
-        TRISBCLR = (1 << 4);      
-        TRISBCLR = (1 << 6);      
+        TRISBCLR = (1 << 2);
+        TRISBCLR = (1 << 3);
+        TRISBCLR = (1 << 4);
+        TRISBCLR = (1 << 6);
 
         LATBbits.LATB2 = RCONbits.POR;
         LATBbits.LATB3 = RCONbits.BOR;
@@ -2114,12 +2114,12 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
             default:
             // fall through, lets just assume state 1
             // this will give us the longest reset path of a min. of 9s (7s + 2s at 0xC1)
-         
-            // state 2, EXTR & BOR & POR 
+
+            // state 2, EXTR & BOR & POR
                 // sometimes state 1 is missed when there is a glitch on the reset line that is so
-                // fast that the code at state 1 does not run, or if reset comes up so slow that EXTR 
+                // fast that the code at state 1 does not run, or if reset comes up so slow that EXTR
                 // is set such as when JP11 enables the MPIDE RC auto-reset circuit.
-             
+
             // state 4, EXTR & BOR & POR; with DBG connected to MPLAB prepare for the 2nd weird reset pair
                 // when we go to state 5, EXTR & POR will be set; SWR will get cleared by the weird reset pair
 
@@ -2128,18 +2128,18 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
                 // fall thru as in either of these states if I don't get another reset
                 // with in a second, then on the next state I want to exit
 
-            // state 1, BOR and POR set, 
+            // state 1, BOR and POR set,
                 // case 1, simple boot, we will wait 7s
                 // case 2, only MPIDE is attached we will wait 6s and MPIDE will reset
                 // case 3, DBG is attached, after 20ms a reset will come in
-            case 0x3:       // state 1  
+            case 0x3:       // state 1
 
                 // wait 1 second. We do this to make sure we are not at state 1 waiting
                 // for state 2 in an MPLAB connected condition.
                 // plus we need to keep either BOR or POR set in case we have those
                 // resets every 650ms.
                 fClrRCONAfter1Second = true;
-                
+
                 // If a reset has not occured after 1 second, then we know the next
                 // state will be an exit, so clear RCON so the next state will
                 // come up as either just EXTR, or EXTR and POR (state 5)
@@ -2161,15 +2161,15 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
                 tExit = (CORE_TIMER_TICKS_PER_MILLISECOND * 1000);  // 1 second delay
                 break;
         }
-  
-        // wait for a reset or completion           
+
+        // wait for a reset or completion
         do
         {
-            tCur = _CP0_GET_COUNT(); 
+            tCur = _CP0_GET_COUNT();
 
             // if we wait long enough, then we know we are in a state where the next
             // state we should exit, but setting RCON to 0, the next state will be just EXTR
-            // and that will cause us to immediately exit. 
+            // and that will cause us to immediately exit.
             // except for the condition where POR gets set and gives us EXTR & POR, state 5.
             if(fClrRCONAfter1Second && ((tCur - tStart) >= (CORE_TIMER_TICKS_PER_MILLISECOND * 1000)))
             {
@@ -2177,7 +2177,7 @@ static inline void __attribute__((always_inline)) UninitLEDsAndButtons(void)
                 fClrRCONAfter1Second = false;
             }
         } while((tCur- tStart) <= tExit);   // 5 second wait
-                   
+
         // when we are done, clear all bits.
         RCON = 0x0;
 
