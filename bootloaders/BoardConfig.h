@@ -780,7 +780,7 @@
     #pragma config FUSBIDIO     = OFF                               // USBID pin control
 #endif
 
-    #define CAPABILITIES    (blCapDownloadLED | blCapUARTInterface | blCapAutoResetListening | blCapVirtualProgramButton | CAPCOMMON)
+    #define CAPABILITIES    (blCapDownloadLED | blCapUSBInterface | blCapVirtualProgramButton | CAPCOMMON)
 
     // Boot LED
     #define EnableBootLED()             (TRISCCLR = (1 << 13))
@@ -797,9 +797,6 @@
     #define DownloadLED_Off()           (LATCCLR = (1 << 14))
 
     // Other capabilities
-    #define LISTEN_BEFORE_LOAD          2000                // no less than 2 seconds
-    #define _USE_UART1_FOR_BOOTLOADER_                      // avrdude program UART
-    #define BAUDRATE                    115200              // avrdude baudrate
     #define fLoadFromAVRDudeViaVirtualProgramButton (LATCbits.LATC12 == 1)
     #define ClearVirtualProgramButton()             (LATCCLR = (1 << 12))
 
