@@ -1,14 +1,32 @@
 
+Allocating common symbols
+Common symbol       size              file
+
+cdcacm_attached_count
+                    0x4               build/FleetCarma/production/_ext/1472/usb.o
+bulk_out_ep         0x1               build/FleetCarma/production/_ext/1472/usb.o
+int_ep              0x1               build/FleetCarma/production/_ext/1472/usb.o
+cdcacm_active       0x1               build/FleetCarma/production/_ext/1472/cdcacm.o
+bulk_in_ep          0x1               build/FleetCarma/production/_ext/1472/usb.o
+cdcacm_attached     0x1               build/FleetCarma/production/_ext/1472/usb.o
+cdc_attached        0x1               build/FleetCarma/production/_ext/1472/usb.o
+endpoints           0x180             build/FleetCarma/production/_ext/1472/usb.o
+scsi_attached_count
+                    0x4               build/FleetCarma/production/_ext/1472/usb.o
+other_attached      0x1               build/FleetCarma/production/_ext/1472/usb.o
+scsi_attached       0x1               build/FleetCarma/production/_ext/1472/usb.o
+
 Microchip PIC32 Memory-Usage Report
 
 kseg0 Program-Memory Usage
 section                    address  length [bytes]      (dec)  Description
 -------                 ----------  -------------------------  -----------
-.text                   0x9fc00498          0xd84        3460  App's exec code 
-.dinit                  0x9fc0121c           0x48          72   
-.text                   0x9fc01264           0x10          16  App's exec code 
-.rodata                 0x9fc01274            0xc          12  Read-only const 
-      Total kseg0_program_mem used  :       0xde8        3560  50.8% of 0x1b60
+.text                   0x9fc00498         0x11cc        4556  App's exec code 
+.dinit                  0x9fc01664           0x98         152   
+.rodata                 0x9fc016fc           0x90         144  Read-only const 
+.text                   0x9fc0178c           0x10          16  App's exec code 
+.rodata                 0x9fc0179c            0xc          12  Read-only const 
+      Total kseg0_program_mem used  :      0x1310        4880  69.6% of 0x1b60
 
 kseg0 Boot-Memory Usage
 section                    address  length [bytes]      (dec)  Description
@@ -26,7 +44,7 @@ section                    address  length [bytes]      (dec)  Description
 .reset                  0xbfc00000          0x10c         268  Reset handler 
          Total kseg1_boot_mem used  :       0x10c         268  29.9% of 0x380
         --------------------------------------------------------------------------
-         Total Program Memory used  :       0xef4        3828  48.3% of 0x1ef0
+         Total Program Memory used  :      0x141c        5148  65.0% of 0x1ef0
         --------------------------------------------------------------------------
 
 
@@ -35,20 +53,22 @@ section                    address  length [bytes]      (dec)  Description
 -------                 ----------  -------------------------  -----------
 .dbg_data               0xa0000000          0x200         512   
 .skip_ram_space         0xa0000200          0x400        1024   
-.sdata                  0xa0000600           0x20          32  Small init data 
-.sbss                   0xa0000620           0x40          64  Small uninit data 
-.bss                    0xa0000660          0x980        2432  Uninitialized data 
-         Total kseg1_data_mem used  :       0xfe0        4064  49.6% of 0x2000
+.sdata                  0xa0000600           0x28          40  Small init data 
+.sbss                   0xa0000628           0x96         150  Small uninit data 
+.bss                    0xa00006c0          0x180         384  Uninitialized data 
+.bss                    0xa0000840          0xdf0        3568  Uninitialized data 
+.bss                    0xa0001800          0x200         512  Uninitialized data 
+         Total kseg1_data_mem used  :      0x182e        6190  75.6% of 0x2000
         --------------------------------------------------------------------------
-            Total Data Memory used  :       0xfe0        4064  49.6% of 0x2000
+            Total Data Memory used  :      0x182e        6190  75.6% of 0x2000
         --------------------------------------------------------------------------
 
 
 Dynamic Data-Memory Reservation
 section                    address  length [bytes]      (dec)  Description
 -------                 ----------  -------------------------  -----------
-heap                    0xa0000fe8              0           0  Reserved for heap 
-stack                   0xa0001000          0xff8        4088  Reserved for stack 
+heap                    0xa0001a08              0           0  Reserved for heap 
+stack                   0xa0001a20          0x5d8        1496  Reserved for stack 
 
         --------------------------------------------------------------------------
 
@@ -58,8 +78,12 @@ Discarded input sections
  .pdr           0x00000000      0x160 build/FleetCarma/production/_ext/1472/main.o
  .reginfo       0x00000000       0x18 build/FleetCarma/production/_ext/1472/crt0.o
  .pdr           0x00000000       0x60 build/FleetCarma/production/_ext/1472/crt0.o
- .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
- .pdr           0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+ .reginfo       0x00000000       0x18 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .pdr           0x00000000       0xe0 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .reginfo       0x00000000       0x18 build/FleetCarma/production/_ext/1472/usb.o
+ .pdr           0x00000000      0x160 build/FleetCarma/production/_ext/1472/usb.o
+ .reginfo       0x00000000       0x18 c:/program files/microchip/xc32/v1.21/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+ .pdr           0x00000000        0x0 c:/program files/microchip/xc32/v1.21/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
 
 Memory Configuration
 
@@ -83,10 +107,12 @@ Linker script and memory map
 
 LOAD build/FleetCarma/production/_ext/1472/main.o
 LOAD build/FleetCarma/production/_ext/1472/crt0.o
+LOAD build/FleetCarma/production/_ext/1472/cdcacm.o
+LOAD build/FleetCarma/production/_ext/1472/usb.o
                 0x00000001                __MPLAB_BUILD = 0x1
                 0x00000400                PROVIDE (_min_stack_size, 0x400)
                 0x00000000                PROVIDE (_min_heap_size, 0x0)
-LOAD c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+LOAD c:/program files/microchip/xc32/v1.21/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
                 0x00000001                PROVIDE (_vector_spacing, 0x1)
                 0xbfc00000                _ebase_address = 0xbfc00000
                 0xbfc00000                _RESET_ADDR = _ebase_address
@@ -172,36 +198,54 @@ LOAD c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/..
  *(.got.plt)
  *(.got)
 
-.sdata          0xa0000600       0x20
+.sdata          0xa0000600       0x28
                 0xa0000600                _sdata_begin = .
  *(.sdata .sdata.* .gnu.linkonce.s.*)
  .sdata         0xa0000600       0x20 build/FleetCarma/production/_ext/1472/main.o
-                0xa0000620                _sdata_end = .
+ .sdata         0xa0000620        0x8 build/FleetCarma/production/_ext/1472/cdcacm.o
+                0xa0000628                _sdata_end = .
 
 .lit8
  *(.lit8)
 
 .lit4
  *(.lit4)
-                0xa0000620                . = ALIGN (0x4)
-                0xa0000620                _data_end = .
-                0xa0000620                _bss_begin = .
+                0xa0000628                . = ALIGN (0x4)
+                0xa0000628                _data_end = .
+                0xa0000628                _bss_begin = .
 
-.sbss           0xa0000620       0x40
-                0xa0000620                _sbss_begin = .
+.sbss           0xa0000628       0x96
+                0xa0000628                _sbss_begin = .
  *(.dynsbss)
  *(.sbss .sbss.* .gnu.linkonce.sb.*)
- .sbss          0xa0000620       0x40 build/FleetCarma/production/_ext/1472/main.o
+ .sbss          0xa0000628       0x40 build/FleetCarma/production/_ext/1472/main.o
+ .sbss          0xa0000668        0x8 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .sbss          0xa0000670       0x38 build/FleetCarma/production/_ext/1472/usb.o
  *(.scommon)
-                0xa0000660                _sbss_end = .
+ .scommon       0xa00006a8        0x1 build/FleetCarma/production/_ext/1472/cdcacm.o
+                0xa00006a8                cdcacm_active
+ *fill*         0xa00006a9        0x3 00
+ .scommon       0xa00006ac       0x12 build/FleetCarma/production/_ext/1472/usb.o
+                0xa00006ac                cdcacm_attached_count
+                0xa00006b0                bulk_out_ep
+                0xa00006b1                int_ep
+                0xa00006b2                bulk_in_ep
+                0xa00006b3                cdcacm_attached
+                0xa00006b4                cdc_attached
+                0xa00006b8                scsi_attached_count
+                0xa00006bc                other_attached
+                0xa00006bd                scsi_attached
+                0xa00006be                _sbss_end = .
 
-.bss            0xa0000660        0x0
+.bss            0xa00006c0      0x180
  *(.dynbss)
  *(COMMON)
-                0xa0000660                . = ALIGN (0x4)
-                0xa0000660                . = ALIGN (0x4)
-                0xa0000660                _end = .
-                0xa0000660                _bss_end = .
+ COMMON         0xa00006c0      0x180 build/FleetCarma/production/_ext/1472/usb.o
+                0xa00006c0                endpoints
+                0xa0000840                . = ALIGN (0x4)
+                0xa0000840                . = ALIGN (0x4)
+                0xa0000840                _end = .
+                0xa0000840                _bss_end = .
                 0x00002000                _bmxdudba_address = 0x2000
                 0x00002000                _bmxdupba_address = 0x2000
 
@@ -237,6 +281,8 @@ LOAD c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/..
  *(.comment)
  .comment       0x00000000       0x3c build/FleetCarma/production/_ext/1472/main.o
                                  0x3d (size before relaxing)
+ .comment       0x00000000       0x3d build/FleetCarma/production/_ext/1472/cdcacm.o
+ .comment       0x00000000       0x3d build/FleetCarma/production/_ext/1472/usb.o
 
 .debug
  *(.debug)
@@ -250,45 +296,65 @@ LOAD c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/..
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x50
+.debug_aranges  0x00000000       0x90
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 build/FleetCarma/production/_ext/1472/main.o
  .debug_aranges
                 0x00000020       0x30 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_aranges
+                0x00000050       0x20 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_aranges
+                0x00000070       0x20 build/FleetCarma/production/_ext/1472/usb.o
 
 .debug_pubnames
-                0x00000000       0x33
+                0x00000000      0x21e
  *(.debug_pubnames)
  .debug_pubnames
                 0x00000000       0x33 build/FleetCarma/production/_ext/1472/main.o
+ .debug_pubnames
+                0x00000033       0x74 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_pubnames
+                0x000000a7      0x177 build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_info     0x00000000     0x1607
+.debug_info     0x00000000     0x2c7d
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000     0x1593 build/FleetCarma/production/_ext/1472/main.o
- .debug_info    0x00001593       0x74 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_info    0x00000000     0x128c build/FleetCarma/production/_ext/1472/main.o
+ .debug_info    0x0000128c       0x74 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_info    0x00001300      0x912 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_info    0x00001c12     0x106b build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_abbrev   0x00000000      0x351
+.debug_abbrev   0x00000000      0x950
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x33f build/FleetCarma/production/_ext/1472/main.o
- .debug_abbrev  0x0000033f       0x12 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_abbrev  0x00000000      0x332 build/FleetCarma/production/_ext/1472/main.o
+ .debug_abbrev  0x00000332       0x12 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_abbrev  0x00000344      0x2d0 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_abbrev  0x00000614      0x33c build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_line     0x00000000      0x3a0
+.debug_line     0x00000000      0x7e5
  *(.debug_line)
- .debug_line    0x00000000      0x2fe build/FleetCarma/production/_ext/1472/main.o
- .debug_line    0x000002fe       0xa2 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_line    0x00000000      0x30b build/FleetCarma/production/_ext/1472/main.o
+ .debug_line    0x0000030b       0xa2 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_line    0x000003ad      0x1d8 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_line    0x00000585      0x260 build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_frame    0x00000000      0x124
+.debug_frame    0x00000000      0x2c0
  *(.debug_frame)
- .debug_frame   0x00000000      0x124 build/FleetCarma/production/_ext/1472/main.o
+ .debug_frame   0x00000000      0x114 build/FleetCarma/production/_ext/1472/main.o
+ .debug_frame   0x00000114       0xb0 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_frame   0x000001c4       0xfc build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_str      0x00000000       0xb6
+.debug_str      0x00000000      0x1c3
  *(.debug_str)
- .debug_str     0x00000000       0xb6 build/FleetCarma/production/_ext/1472/main.o
+ .debug_str     0x00000000       0xca build/FleetCarma/production/_ext/1472/main.o
+ .debug_str     0x000000ca       0x55 build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_str     0x0000011f       0xa4 build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_loc      0x00000000      0x607
+.debug_loc      0x00000000     0x1203
  *(.debug_loc)
- .debug_loc     0x00000000      0x607 build/FleetCarma/production/_ext/1472/main.o
+ .debug_loc     0x00000000      0x5d3 build/FleetCarma/production/_ext/1472/main.o
+ .debug_loc     0x000005d3      0x48e build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_loc     0x00000a61      0x7a2 build/FleetCarma/production/_ext/1472/usb.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -306,15 +372,20 @@ LOAD c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/..
  *(.debug_varnames)
 
 .debug_pubtypes
-                0x00000000       0xc5
+                0x00000000      0x1a6
  *(.debug_pubtypes)
  .debug_pubtypes
-                0x00000000       0xc5 build/FleetCarma/production/_ext/1472/main.o
+                0x00000000       0xb3 build/FleetCarma/production/_ext/1472/main.o
+ .debug_pubtypes
+                0x000000b3       0x4e build/FleetCarma/production/_ext/1472/cdcacm.o
+ .debug_pubtypes
+                0x00000101       0xa5 build/FleetCarma/production/_ext/1472/usb.o
 
-.debug_ranges   0x00000000       0x58
+.debug_ranges   0x00000000      0x120
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x30 build/FleetCarma/production/_ext/1472/main.o
- .debug_ranges  0x00000030       0x28 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_ranges  0x00000000       0x68 build/FleetCarma/production/_ext/1472/main.o
+ .debug_ranges  0x00000068       0x28 build/FleetCarma/production/_ext/1472/crt0.o
+ .debug_ranges  0x00000090       0x90 build/FleetCarma/production/_ext/1472/cdcacm.o
 
 .gnu.attributes
  *(.gnu.attributes)
@@ -322,45 +393,80 @@ OUTPUT(dist/FleetCarma/production/chipKIT-Bootloaders.production.elf elf32-tradl
 LOAD stack
 LOAD data_init
 
-.stack          0xa0001000      0x400
- .stack         0xa0001000      0x400 stack
+.stack          0xa0001a20      0x400
+ .stack         0xa0001a20      0x400 stack
 
-.bss            0xa0000660      0x980
- .bss           0xa0000660      0x980 build/FleetCarma/production/_ext/1472/main.o
+.bss            0xa0000840      0xdf0
+ .bss           0xa0000840      0x980 build/FleetCarma/production/_ext/1472/main.o
+ .bss           0xa00011c0      0x470 build/FleetCarma/production/_ext/1472/cdcacm.o
+
+.bss            0xa0001800      0x200
+ .bss           0xa0001800      0x200 build/FleetCarma/production/_ext/1472/usb.o
 
 .bss%z1         0x00000000        0x0
- .bss           0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+ .bss           0x00000000        0x0 c:/program files/microchip/xc32/v1.21/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
 
 .data%z2        0x00000000        0x0
- .data          0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+ .data          0x00000000        0x0 c:/program files/microchip/xc32/v1.21/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
 
-.bss%z3         0x00000000        0x0
- .bss           0x00000000        0x0 build/FleetCarma/production/_ext/1472/crt0.o
+.mdebug.abi32%z3
+                0x00000000        0x0
+ .mdebug.abi32  0x00000000        0x0 build/FleetCarma/production/_ext/1472/usb.o
 
 .data%z4        0x00000000        0x0
- .data          0x00000000        0x0 build/FleetCarma/production/_ext/1472/crt0.o
+ .data          0x00000000        0x0 build/FleetCarma/production/_ext/1472/usb.o
 
 .mdebug.abi32%z5
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 build/FleetCarma/production/_ext/1472/main.o
+ .mdebug.abi32  0x00000000        0x0 build/FleetCarma/production/_ext/1472/cdcacm.o
 
 .data%z6        0x00000000        0x0
+ .data          0x00000000        0x0 build/FleetCarma/production/_ext/1472/cdcacm.o
+
+.bss%z7         0x00000000        0x0
+ .bss           0x00000000        0x0 build/FleetCarma/production/_ext/1472/crt0.o
+
+.data%z8        0x00000000        0x0
+ .data          0x00000000        0x0 build/FleetCarma/production/_ext/1472/crt0.o
+
+.mdebug.abi32%z9
+                0x00000000        0x0
+ .mdebug.abi32  0x00000000        0x0 build/FleetCarma/production/_ext/1472/main.o
+
+.data%z10       0x00000000        0x0
  .data          0x00000000        0x0 build/FleetCarma/production/_ext/1472/main.o
 
-.text           0x9fc00498      0xd84
- .text          0x9fc00498      0xd84 build/FleetCarma/production/_ext/1472/main.o
-                0x9fc00f04                avrbl_state_machine
-                0x9fc0101c                main
+.text           0x9fc00498     0x11cc
+ .text          0x9fc00498      0x83c build/FleetCarma/production/_ext/1472/main.o
+                0x9fc00ad1                main
+                0x9fc00c2d                avrbl_state_machine
+ .text          0x9fc00cd4      0x6d4 build/FleetCarma/production/_ext/1472/usb.o
+                0x9fc00df1                usb_device_enqueue
+                0x9fc00e9d                usb_isr
+                0x9fc01239                usb_register
+                0x9fc01249                usb_device_descriptor
+                0x9fc01255                usb_configuration_descriptor
+                0x9fc01261                usb_string_descriptor
+                0x9fc0126d                usb_uninitialize
+                0x9fc01345                usb_initialize
+ .text          0x9fc013a8      0x2bc build/FleetCarma/production/_ext/1472/cdcacm.o
+                0x9fc014e5                cdcacm_print
+                0x9fc015dd                cdcacm_command_ack
+                0x9fc01605                cdcacm_register
+                0x9fc01661                null_reset_cbfn
 
-.dinit          0x9fc0121c       0x48
- .dinit         0x9fc0121c       0x48 data_init
+.dinit          0x9fc01664       0x98
+ .dinit         0x9fc01664       0x98 data_init
 
-.text           0x9fc01264       0x10
- .text          0x9fc01264       0x10 build/FleetCarma/production/_ext/1472/crt0.o
-                0x9fc0126c                __crt0_exit
+.rodata         0x9fc016fc       0x90
+ .rodata        0x9fc016fc       0x90 build/FleetCarma/production/_ext/1472/cdcacm.o
 
-.rodata         0x9fc01274        0xc
- .rodata        0x9fc01274        0xc build/FleetCarma/production/_ext/1472/main.o
+.text           0x9fc0178c       0x10
+ .text          0x9fc0178c       0x10 build/FleetCarma/production/_ext/1472/crt0.o
+                0x9fc01794                __crt0_exit
 
-.text%z7        0x00000000        0x0
- .text          0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.20/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+.rodata         0x9fc0179c        0xc
+ .rodata        0x9fc0179c        0xc build/FleetCarma/production/_ext/1472/main.o
+
+.text%z11       0x00000000        0x0
+ .text          0x00000000        0x0 c:/program files/microchip/xc32/v1.21/bin/../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o

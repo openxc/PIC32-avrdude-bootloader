@@ -2981,6 +2981,8 @@
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
@@ -2991,6 +2993,8 @@
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
@@ -3001,46 +3005,58 @@
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
-      <item path="../cdcacm.c" ex="true" overriding="false">
+      <item path="../cdcacm.c" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AS>
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
-      <item path="../cdcacm.h" ex="true" overriding="false">
+      <item path="../cdcacm.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AS>
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
-      <item path="../usb.c" ex="true" overriding="false">
+      <item path="../serial.h" ex="true" overriding="false">
+      </item>
+      <item path="../usb.c" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AS>
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
-      <item path="../usb.h" ex="true" overriding="false">
+      <item path="../usb.h" ex="false" overriding="false">
         <C32>
         </C32>
         <C32-AS>
         </C32-AS>
         <C32-LD>
         </C32-LD>
+        <C32CPP>
+        </C32CPP>
         <C32Global>
         </C32Global>
       </item>
@@ -3106,6 +3122,8 @@
         <property key="warn-section-align" value="false"/>
         <appendMe value="-Os"/>
       </C32-LD>
+      <C32CPP>
+      </C32CPP>
       <C32Global>
         <property key="legacy-libc" value="false"/>
         <property key="save-temps" value="false"/>
