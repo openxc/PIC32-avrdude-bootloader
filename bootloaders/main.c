@@ -84,14 +84,14 @@ static byte reply[1024];    // reply buffer
 static byte pageMap[FLASH_BYTES/FLASH_PAGE_SIZE];
 static uint32 addrBase = FLASH_START;
 static uint32 avrdudeAddrBase = FLASH_START;
-static uint32 cbSkipRam = ((uint32) &_RAM_SKIP_SIZE);  
+static uint32 cbSkipRam = ((uint32) &_RAM_SKIP_SIZE);
 
 int main()  // we're called directly by Crt0.S
 {
     ASSERT(sizeof(byte) == 1);
     ASSERT(sizeof(uint16) == 2);
     ASSERT(sizeof(uint32) == 4);
- 
+
     ramHeader.rcon = RCON;
     InitLEDsAndButtons();
 
@@ -119,8 +119,8 @@ int main()  // we're called directly by Crt0.S
 	// Always clear out RCON after 'using' it's values, so it doesn't screw things up next time
     // This must occur after the WaitForFinalReset() and checking our program buttons states
     ClearVirtualProgramButton();
-	RCON = 0;	
-	
+	RCON = 0;
+
     // If we are just going to immediately load from flash
     // don't even init the UART or USB, just load the application
     if (fLoadProgramFromFlash && LISTEN_BEFORE_LOAD == 0)
@@ -128,7 +128,7 @@ int main()  // we're called directly by Crt0.S
         // launch the application!
         ExecuteApp();
     }
-	
+
     tLoopStart = _CP0_GET_COUNT();
     tLastBlink = tLoopStart;
 
@@ -146,7 +146,7 @@ int main()  // we're called directly by Crt0.S
         // In reality, when downloading starts the boot LED is erratic; look at the download LED
         // to see if you are downloading.
         if ((tLoopTime - tLastBlink) >= ((CORE_TIMER_TICKS_PER_MILLISECOND  * 125) >> active)) {
-            
+
             // blink the heartbeat LED
             BootLED_Toggle();
 
@@ -214,7 +214,7 @@ int main()  // we're called directly by Crt0.S
 void avrbl_state_machine(byte b)
 {
     csum ^= b;
-    
+
     switch (state) {
         case STATE_START:
             if (b == 27) {
@@ -263,7 +263,7 @@ void avrbl_state_machine(byte b)
 }
 
 // this function sends bytes to the CDC/ACM port
-static void 
+static void
 avrbl_print(const byte *buffer, int length)
 {
     stk500v2_print(buffer, length);
@@ -299,7 +299,7 @@ avrbl_message(byte *request, int size)
             // this will block us from loading from flash if our auto-reset timeout occures while we are actually
             // in the process of downloading a new applicaiton. We wil have to wait until fLoaded is true before
             // we will load the application.
-            fLoadProgramFromFlash = false; 
+            fLoadProgramFromFlash = false;
 
             active = true;
             erased = false;
@@ -375,7 +375,7 @@ avrbl_message(byte *request, int size)
             // if we have an odd number of bytes, we need to round up and make it DWORD aligned
             // The last thing in this message is data, so we can just put 0xFFs at the end
             // and round up to a word alignment.
-            nbytes = ((request[1])<<8)|(request[2]); 
+            nbytes = ((request[1])<<8)|(request[2]);
             nbytesAligned = (nbytes + 3) & (~(0x3));
 
             // just put 0xFF at the end of the buffer until we are DWORD aligned
@@ -386,7 +386,7 @@ avrbl_message(byte *request, int size)
 
 			if(fGetBaseAddress)
 			{
-				// here we must know how old and new ones look 
+				// here we must know how old and new ones look
 				// old images all started at offest 0x180, so the first
 				// avrdude load address was 0x100 - 0x1FF
 				// new images all start at offset 0xF8, so avrdude will
@@ -394,7 +394,7 @@ avrbl_message(byte *request, int size)
 				if(nbytesAligned >= 0x100 && (load_address & 0x1FF) == 0x000)		// must not be offset 0x100 - 0x1FF
 				{
 					uint32 addrBaseT = *((uint32 *)(request+10+offsetBaseAddrInfo));
-					
+
 					// stupid avrdude only knows about 64K of memory and doesn't really know
 					// about anything above that, so the upper 16bits are masked. We use the upper
 					// 16 bits as our base address to add on. Fortunately, avrdude can program more than 64K.
@@ -441,7 +441,7 @@ avrbl_message(byte *request, int size)
 					load_address++;
 				}
 			}
- 
+
             reply[replyi++] = STATUS_CMD_OK;
             break;
         case CMD_LEAVE_PROGMODE_ISP:
@@ -481,7 +481,7 @@ avrbl_message(byte *request, int size)
 
 /***    void ExecuteApp(void)
 **
-**    Synopsis:   
+**    Synopsis:
 **      Jumps to the application
 *
 **    Parameters:
@@ -502,11 +502,11 @@ static void ExecuteApp(void)
 {
   IMAGE_HEADER_INFO *   pHeaderInfo;
 
-    UninitStk500v2Interface(); 
+    UninitStk500v2Interface();
     UninitLEDsAndButtons();
-    
+
 	// We are about to jump to the application
-	// but lets first check to see if the header info gave me a 
+	// but lets first check to see if the header info gave me a
 	// special jump location
 	// see if we have a header
 	if((pHeaderInfo = getHeaderStructure(addrBase)) != NULL)
@@ -519,7 +519,7 @@ static void ExecuteApp(void)
             {
        		    // Set the jump location
     		    UserApp = pHeaderInfo->pJumpAddr;
-            } 
+            }
         }
         else
         {
@@ -529,12 +529,12 @@ static void ExecuteApp(void)
 
         // now load the RAM HEADER DATA
         // check to see if we have header info? We use the cbHeader as a version number
-        if( pHeaderInfo->cbHeader >= OFFSETOF(IMAGE_HEADER_INFO,cbBlPreservedRam) &&        
+        if( pHeaderInfo->cbHeader >= OFFSETOF(IMAGE_HEADER_INFO,cbBlPreservedRam) &&
             // is the header in our perserved space? Can we at least save the number of bytes written to the header?
-            ((uint32) pHeaderInfo->pRamHeader) <= (((uint32) &_skip_ram_space_end_adder) - sizeof(uint32)) )    
+            ((uint32) pHeaderInfo->pRamHeader) <= (((uint32) &_skip_ram_space_end_adder) - sizeof(uint32)) )
         {
             uint32 cb = MIN(pHeaderInfo->cbRamHeader, sizeof(RAM_HEADER_INFO)); // only copy what we the bootloader and sketch both know
-            
+
             // and make sure we don't walk on our (the bootloaders) own memory
             cb = MIN(cb, (((uint32) &_skip_ram_space_end_adder) - ((uint32) pHeaderInfo->pRamHeader)));
 
@@ -554,7 +554,7 @@ static void ExecuteApp(void)
 
 /***    static HEADER_INFO * getHeaderStructure(uint32 imageBaseAddr)
 **
-**    Synopsis:   
+**    Synopsis:
 **      See if we have a header and gets a pointer to it
 *
 **    Parameters:
@@ -590,8 +590,8 @@ static IMAGE_HEADER_INFO * getHeaderStructure(uint32 imageBaseAddr)
             {
 				// all looks good, so we have the header.
 				return(pHeaderInfo);
-            }           
-        }     
+            }
+        }
     }
 
 	return(NULL);
@@ -599,7 +599,7 @@ static IMAGE_HEADER_INFO * getHeaderStructure(uint32 imageBaseAddr)
 
 /***    void eraseFlashViaHeaderInstructions(void)
 **
-**    Synopsis:   
+**    Synopsis:
 **      When done loading a program, clear the rest of flash as defined by the header info
 *
 **    Parameters:
@@ -626,7 +626,7 @@ static void finshFlashProcessingAfterLoad(void)
 
 	// see if we have a header
 	if((pHeaderInfo = getHeaderStructure(addrBase)) != NULL)
-    {    
+    {
         // This is stuff that needs to be put in the header
         flashWriteUint32((uint32) &pHeaderInfo->verBootloader, &bootloaderVer, 1);
         flashWriteUint32((uint32) &pHeaderInfo->vend, &prodAndVend , 1);
@@ -637,7 +637,7 @@ static void finshFlashProcessingAfterLoad(void)
 		if((pHeaderInfo->imageType & imageJustInTimeFlashErase) == imageJustInTimeFlashErase)
 		{
 			return;	// nothing more to do
-		}		
+		}
 		// if we are asked to erase the range of pages in the header, erase to those limits
 		else if((pHeaderInfo->imageType & imageLinkerSpecifiedFlashErase) == imageLinkerSpecifiedFlashErase)
 		{
@@ -651,9 +651,9 @@ static void finshFlashProcessingAfterLoad(void)
 		            	addrHigh 	= FLASH_START + FLASH_BYTES;
 		}
 
-        // and if none of the above, we will erase all but the last 4K reserved for EEProm 
+        // and if none of the above, we will erase all but the last 4K reserved for EEProm
         // as we did in the past.
- 	}           
+ 	}
 
     // Cleared any pages that have not been cleared to the requested limits
 	// by default his will be all of flash if we did not have a header.
@@ -672,7 +672,7 @@ static void finshFlashProcessingAfterLoad(void)
 
 /***    void flashOperation(uint32 nvmop, uint32 addr, uint32 data)
 **
-**    Synopsis:   
+**    Synopsis:
 **      Performs either a page erase, word write, or row write
 **
 **    Parameters:
@@ -707,7 +707,7 @@ static void __attribute__((nomips16)) flashOperation(uint32 nvmop, uint32 addr, 
 
     // Suspend or Disable all Interrupts
 // no interrupts in the bootloader
-//    SuspendINT(status);  
+//    SuspendINT(status);
 
     #if defined(_PCACHE)
         // disable predictive prefetching, see errata
@@ -751,7 +751,7 @@ static void __attribute__((nomips16)) flashOperation(uint32 nvmop, uint32 addr, 
         CHECONSET = PFEN;
     #endif
 
-    // Restore Interrupts 
+    // Restore Interrupts
 //no interrupts in the bootloader
 //    RestoreINT(status);
 
@@ -762,7 +762,7 @@ static void __attribute__((nomips16)) flashOperation(uint32 nvmop, uint32 addr, 
 
 /***    void flashErasePage(uint32 addrPage)
 **
-**    Synopsis:   
+**    Synopsis:
 **      Erases the page starting at the page address.
 *
 **    Parameters:
@@ -793,17 +793,17 @@ static void flashErasePage(uint32 addrPage)
     for(j=0; j<5; j++)
     {
     	// first check to see if the page needs to be erased
-       	for (i = 0; i < FLASH_PAGE_SIZE/sizeof(uint32); i++) 
+       	for (i = 0; i < FLASH_PAGE_SIZE/sizeof(uint32); i++)
     	{
     		x &= rgUint32[i];
     	}
-    	
+
         // flash erased, we are done.
         if(x == ALLF)
         {
             break;
-        } 
-	
+        }
+
         // Unlock and Erase Page
         flashOperation(NVMOP_PAGE_ERASE, addrPage, 0);
     }
@@ -814,7 +814,7 @@ static void flashErasePage(uint32 addrPage)
 
 /***    void flashWriteUint32(uint32 addrUint32, uint32 *rgu32Data, uint32 cu32Data)
 **
-**    Synopsis:   
+**    Synopsis:
 **      Writes an array to uint32 to flash
 *
 **    Parameters:
@@ -836,12 +836,12 @@ static void flashWriteUint32(uint32 addrUint32, uint32 *rgu32Data, uint32 cu32Da
 {
     int  i = 0;
 
-    for(i=0; i < cu32Data; i++) 
+    for(i=0; i < cu32Data; i++)
 	{
 
 		// only do this if the data is not what is already in flash
 		if(rgu32Data[i] != ALLF)
-		{	
+		{
 	        // Write the data
 	        flashOperation(NVMOP_WORD_PGM, addrUint32, rgu32Data[i]);
 		}
@@ -852,7 +852,7 @@ static void flashWriteUint32(uint32 addrUint32, uint32 *rgu32Data, uint32 cu32Da
 
 /***    void justInTimeFlashErase(uint32 addrLow, uint32 addrHigh)
 **
-**    Synopsis:   
+**    Synopsis:
 **      Erases all pages that have not been erased in the address range
 *
 **    Parameters:

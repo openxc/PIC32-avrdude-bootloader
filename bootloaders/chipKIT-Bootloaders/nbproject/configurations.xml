@@ -3035,6 +3035,16 @@
         </C32Global>
       </item>
       <item path="../serial.h" ex="true" overriding="false">
+        <C32>
+        </C32>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
       </item>
       <item path="../usb.c" ex="false" overriding="false">
         <C32>
