@@ -137,3 +137,10 @@ CND_ARTIFACT_PATH_MX7_UWB32_USB=dist/MX7_UWB32_USB/production/chipKIT-Bootloader
 CND_PACKAGE_DIR_MX7_UWB32_USB=${CND_DISTDIR}/MX7_UWB32_USB/package
 CND_PACKAGE_NAME_MX7_UWB32_USB=chipkit-bootloaders.tar
 CND_PACKAGE_PATH_MX7_UWB32_USB=${CND_DISTDIR}/MX7_UWB32_USB/package/chipkit-bootloaders.tar
+# FleetCarma configuration
+CND_ARTIFACT_DIR_FleetCarma=dist/FleetCarma/production
+CND_ARTIFACT_NAME_FleetCarma=chipKIT-Bootloaders.production.hex
+CND_ARTIFACT_PATH_FleetCarma=dist/FleetCarma/production/chipKIT-Bootloaders.production.hex
+CND_PACKAGE_DIR_FleetCarma=${CND_DISTDIR}/FleetCarma/package
+CND_PACKAGE_NAME_FleetCarma=chipkit-bootloaders.tar
+CND_PACKAGE_PATH_FleetCarma=${CND_DISTDIR}/FleetCarma/package/chipkit-bootloaders.tar
