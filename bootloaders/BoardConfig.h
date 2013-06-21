@@ -737,7 +737,7 @@
     #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
 
 //************************************************************************
-#elif defined(_BOARD_FLEETCARMA_)
+#elif defined(_BOARD_CROSSCHASM_C5_)
 
 #if defined(PUT_CONFIG_BITS_HERE)
 

@@ -6,7 +6,7 @@
 
 # Macros
 TOP=`pwd`
-CND_CONF=FleetCarma
+CND_CONF=CrossChasm_C5_USB
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
