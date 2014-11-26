@@ -1,0 +1,492 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+endpoints           0x180             build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+bulk_out_ep         0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+scsi_attached_count
+                    0x4               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+scsi_attached       0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+bulk_in_ep          0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+cdcacm_attached_count
+                    0x4               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+int_ep              0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+other_attached      0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+cdcacm_active       0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+cdcacm_attached     0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+cdc_attached        0x1               build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+Microchip PIC32 Memory-Usage Report
+
+kseg0 Program-Memory Usage
+section                    address  length [bytes]      (dec)  Description
+-------                 ----------  -------------------------  -----------
+.text                   0x9fc00490         0x2334        9012  App's exec code 
+.rodata                 0x9fc027c4          0x1f8         504  Read-only const 
+.dinit                  0x9fc029bc           0xa0         160   
+.rodata                 0x9fc02a5c           0x90         144  Read-only const 
+.text                   0x9fc02aec           0x10          16  App's exec code 
+      Total kseg0_program_mem used  :      0x266c        9836  88.7% of 0x2b50
+
+kseg0 Boot-Memory Usage
+section                    address  length [bytes]      (dec)  Description
+-------                 ----------  -------------------------  -----------
+         Total kseg0_boot_mem used  :           0           0  
+
+Exception-Memory Usage 
+section                    address  length [bytes]      (dec)  Description
+-------                 ----------  -------------------------  -----------
+          Total exception_mem used  :           0           0  <1% of 0x10
+
+kseg1 Boot-Memory Usage
+section                    address  length [bytes]      (dec)  Description
+-------                 ----------  -------------------------  -----------
+.reset                  0xbfc00000          0x10c         268  Reset handler 
+         Total kseg1_boot_mem used  :       0x10c         268  29.9% of 0x380
+        --------------------------------------------------------------------------
+         Total Program Memory used  :      0x2778       10104  84.2% of 0x2ee0
+        --------------------------------------------------------------------------
+
+
+kseg1 Data-Memory Usage
+section                    address  length [bytes]      (dec)  Description
+-------                 ----------  -------------------------  -----------
+.dbg_data               0xa0000000          0x200         512  Memory reserved for debugger exec 
+.skip_ram_space         0xa0000200          0x400        1024   
+.sdata                  0xa0000600           0x28          40  Small init data 
+.sbss                   0xa0000628          0x14c         332  Small uninit data 
+.bss                    0xa0000774          0x180         384  Uninitialized data 
+.bss                    0xa00008f4         0x1264        4708  Uninitialized data 
+.bss                    0xa0001c00          0x200         512  Uninitialized data 
+         Total kseg1_data_mem used  :      0x1d58        7512  61.1% of 0x3000
+        --------------------------------------------------------------------------
+            Total Data Memory used  :      0x1d58        7512  61.1% of 0x3000
+        --------------------------------------------------------------------------
+
+
+Dynamic Data-Memory Reservation
+section                    address  length [bytes]      (dec)  Description
+-------                 ----------  -------------------------  -----------
+heap                    0xa0001e08              0           0  Reserved for heap 
+stack                   0xa0001e20         0x11d8        4568  Reserved for stack 
+
+        --------------------------------------------------------------------------
+
+Discarded input sections
+
+ .reginfo       0x00000000       0x18 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .reginfo       0x00000000       0x18 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+ .reginfo       0x00000000       0x18 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .reginfo       0x00000000       0x18 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+ .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/xc32/v1.33/bin/bin/../../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+kseg1_boot_mem   0xbfc00000         0x00000380
+debug_vectors    0xbfc00380         0x00000110
+kseg0_boot_mem   0x9fc00490         0x00000000
+kseg0_program_mem 0x9fc00490         0x00002b50         xr
+exception_mem    0xbfc02fe0         0x00000010
+debug_exec_mem   0xbfc02000         0x00000000
+config3          0xbfc02ff0         0x00000004
+config2          0xbfc02ff4         0x00000004
+config1          0xbfc02ff8         0x00000004
+config0          0xbfc02ffc         0x00000004
+kseg1_data_mem   0xa0000000         0x00003000         w !x
+sfrs             0xbf800000         0x00100000
+configsfrs       0xbfc02ff0         0x00000010
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+LOAD build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+LOAD build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+LOAD build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+                0x00000001                __MPLAB_BUILD = 0x1
+                0x00000400                PROVIDE (_min_stack_size, 0x400)
+                0x00000000                PROVIDE (_min_heap_size, 0x0)
+LOAD c:/program files (x86)/microchip/xc32/v1.33/bin/bin/../../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+                0x00000001                PROVIDE (_vector_spacing, 0x1)
+                0xbfc00000                _ebase_address = ORIGIN (kseg1_boot_mem)
+                0xbfc00000                _RESET_ADDR = _ebase_address
+                0xbfc02fe0                _DBG_EXCPT_ADDR = ORIGIN (exception_mem)
+                0xbfc02000                _DBG_CODE_ADDR = ORIGIN (debug_exec_mem)
+                0x00000600                _RAM_SKIP_SIZE = 0x600
+
+.config_BFC02FF0
+                0xbfc02ff0        0x4
+ *(.config_BFC02FF0)
+ .config_BFC02FF0
+                0xbfc02ff0        0x4 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.config_BFC02FF4
+                0xbfc02ff4        0x4
+ *(.config_BFC02FF4)
+ .config_BFC02FF4
+                0xbfc02ff4        0x4 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.config_BFC02FF8
+                0xbfc02ff8        0x4
+ *(.config_BFC02FF8)
+ .config_BFC02FF8
+                0xbfc02ff8        0x4 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.config_BFC02FFC
+                0xbfc02ffc        0x4
+ *(.config_BFC02FFC)
+ .config_BFC02FFC
+                0xbfc02ffc        0x4 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.reset          0xbfc00000      0x10c
+ *(.reset)
+ .reset         0xbfc00000       0x10 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+                0xbfc00000                _reset
+ *(.reset.startup)
+ .reset.startup
+                0xbfc00010       0xfc build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+
+.text
+ *(.stub .gnu.linkonce.t.*)
+ *(.text.*personality*)
+ *(.mips16.fn.*)
+ *(.mips16.call.*)
+ *(.gnu.warning)
+
+.rodata         0x9fc00490        0x0
+ *(.rodata.* .gnu.linkonce.r.*)
+ *(.rodata1)
+                0x9fc00490                . = ALIGN (0x4)
+
+.sdata2         0xbfc0010c        0x0
+ *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
+                0xbfc0010c                . = ALIGN (0x4)
+
+.sbss2          0xbfc0010c        0x0
+ *(.sbss2 .sbss2.* .gnu.linkonce.sb2.*)
+                0xbfc0010c                . = ALIGN (0x4)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame
+ *(.eh_frame)
+
+.dbg_data       0xa0000000      0x200
+                0xa0000000                _skip_ram_space_addr = .
+                0xa0000200                . = (. + 0x200)
+ *fill*         0xa0000000      0x200 
+
+.skip_ram_space
+                0xa0000200      0x400
+                0xa0000600                . = (. + (_RAM_SKIP_SIZE - SIZEOF (.dbg_data)))
+ *fill*         0xa0000200      0x400 
+                0xa0000600                _skip_ram_space_end_adder = .
+
+.eh_frame
+ *(.eh_frame)
+                0xa0000600                . = .
+                0xa00085f0                _gp = (ALIGN (0x10) + 0x7ff0)
+
+.got
+ *(.got.plt)
+ *(.got)
+
+.sdata          0xa0000600       0x28
+                0xa0000600                _sdata_begin = .
+ *(.sdata .sdata.* .gnu.linkonce.s.*)
+ .sdata         0xa0000600       0x20 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .sdata         0xa0000620        0x8 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+                0xa0000628                _sdata_end = .
+
+.lit8
+ *(.lit8)
+
+.lit4
+ *(.lit4)
+                0xa0000628                . = ALIGN (0x4)
+                0xa0000628                _data_end = .
+                0xa0000628                _bss_begin = .
+
+.sbss           0xa0000628      0x14c
+                0xa0000628                _sbss_begin = .
+ *(.dynsbss)
+ *(.sbss .sbss.* .gnu.linkonce.sb.*)
+ .sbss          0xa0000628       0xf4 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+                0xa0000628                telit_initialized
+                0xa0000629                FlashProgramming
+ .sbss          0xa000071c        0x8 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .sbss          0xa0000724       0x38 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+ *(.scommon)
+ .scommon       0xa000075c        0x1 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+                0xa000075c                cdcacm_active
+ *fill*         0xa000075d        0x3 
+ .scommon       0xa0000760       0x14 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+                0xa0000760                bulk_out_ep
+                0xa0000764                scsi_attached_count
+                0xa0000768                scsi_attached
+                0xa0000769                bulk_in_ep
+                0xa000076c                cdcacm_attached_count
+                0xa0000770                int_ep
+                0xa0000771                other_attached
+                0xa0000772                cdcacm_attached
+                0xa0000773                cdc_attached
+                0xa0000774                _sbss_end = .
+
+.bss            0xa0000774      0x180
+ *(.dynbss)
+ *(COMMON)
+ COMMON         0xa0000774      0x180 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+                0xa0000774                endpoints
+                0xa00008f4                . = ALIGN (0x4)
+                0xa00008f4                . = ALIGN (0x4)
+                0xa00008f4                _end = .
+                0xa00008f4                _bss_end = .
+                0x00003000                _bmxdudba_address = 0x3000
+                0x00003000                _bmxdupba_address = 0x3000
+
+/DISCARD/
+ *(.pdr)
+ *(.reginfo)
+ *(.rel.dyn)
+ *(.note.GNU-stack)
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+ *(.discard)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x3c
+ *(.comment)
+ .comment       0x00000000       0x3c build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+                                 0x3d (size before relaxing)
+ .comment       0x00000000       0x3d build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .comment       0x00000000       0x3d build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x90
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_aranges
+                0x00000020       0x30 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+ .debug_aranges
+                0x00000050       0x20 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_aranges
+                0x00000070       0x20 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_pubnames
+                0x00000000      0x414
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000      0x229 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_pubnames
+                0x00000229       0x74 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_pubnames
+                0x0000029d      0x177 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_info     0x00000000     0x549a
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000     0x3040 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_info    0x00003040       0x9f build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+ .debug_info    0x000030df      0xe26 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_info    0x00003f05     0x1595 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_abbrev   0x00000000      0xa3a
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x432 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_abbrev  0x00000432       0x12 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+ .debug_abbrev  0x00000444      0x2da build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_abbrev  0x0000071e      0x31c build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_line     0x00000000      0xc46
+ *(.debug_line)
+ .debug_line    0x00000000      0x707 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_line    0x00000707       0xa2 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+ .debug_line    0x000007a9      0x203 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_line    0x000009ac      0x29a build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_frame    0x00000000      0x4ac
+ *(.debug_frame)
+ .debug_frame   0x00000000      0x34c build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_frame   0x0000034c       0xb0 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_frame   0x000003fc       0xb0 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_str      0x00000000      0x26c
+ *(.debug_str)
+ .debug_str     0x00000000      0x149 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_str     0x00000149       0x6a build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_str     0x000001b3       0xb9 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_loc      0x00000000     0x1564
+ *(.debug_loc)
+ .debug_loc     0x00000000      0xc51 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_loc     0x00000c51      0x365 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_loc     0x00000fb6      0x5ae build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+                0x00000000      0x2ac
+ *(.debug_pubtypes)
+ .debug_pubtypes
+                0x00000000      0x16f build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .debug_pubtypes
+                0x0000016f       0x73 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+ .debug_pubtypes
+                0x000001e2       0xca build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.debug_ranges   0x00000000       0x28
+ *(.debug_ranges)
+ .debug_ranges  0x00000000       0x28 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+
+.gnu.attributes
+ *(.gnu.attributes)
+OUTPUT(dist/CrossChasm_C5_Cellular/production/chipKIT-Bootloaders.production.elf elf32-tradlittlemips)
+LOAD stack
+LOAD data_init
+
+.stack          0xa0001e20      0x400
+ .stack         0xa0001e20      0x400 stack
+
+.bss            0xa00008f4     0x1264
+ .bss           0xa00008f4      0xdf4 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+ .bss           0xa00016e8      0x470 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+
+.bss            0xa0001c00      0x200
+ .bss           0xa0001c00      0x200 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.bss%z1         0x00000000        0x0
+ .bss           0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.33/bin/bin/../../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+
+.data%z2        0x00000000        0x0
+ .data          0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.33/bin/bin/../../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
+
+.mdebug.abi32%z3
+                0x00000000        0x0
+ .mdebug.abi32  0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.data%z4        0x00000000        0x0
+ .data          0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+
+.mdebug.abi32%z5
+                0x00000000        0x0
+ .mdebug.abi32  0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+
+.data%z6        0x00000000        0x0
+ .data          0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+
+.bss%z7         0x00000000        0x0
+ .bss           0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+
+.data%z8        0x00000000        0x0
+ .data          0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+
+.mdebug.abi32%z9
+                0x00000000        0x0
+ .mdebug.abi32  0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.data%z10       0x00000000        0x0
+ .data          0x00000000        0x0 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.text           0x9fc00490     0x2334
+ .text          0x9fc00490     0x19e8 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+                0x9fc0079d                avrbl_state_machine
+                0x9fc00859                ConvertAsciiToHex
+                0x9fc008a1                uart_find
+                0x9fc008dd                finder
+                0x9fc0090d                uart_tx
+                0x9fc00935                uart_rx_full
+                0x9fc00955                uart_rx_empty
+                0x9fc00969                uart_rx_pop
+                0x9fc0098d                uart_rx_push
+                0x9fc009b9                uart_rx
+                0x9fc009f9                uart_clear
+                0x9fc00a31                uart_rx_reset
+                0x9fc00a45                crc16Reflected
+                0x9fc00aa9                WriteHexRecord2Flash
+                0x9fc00c51                UpgradeFromModem
+                0x9fc00cb5                telit_socketstatus
+                0x9fc00d15                telit_readsocket
+                0x9fc00e31                telit_cflo
+                0x9fc00e95                telit_setbaud115200
+                0x9fc00ef9                telit_initialize
+                0x9fc01031                telit_getbackupinfo
+                0x9fc01185                telit_findbackup
+                0x9fc01251                telit_makebackup
+                0x9fc0141c                telit_restorebackup
+                0x9fc01681                hexloader
+                0x9fc0179d                otaloader
+                0x9fc019a1                main
+ .text          0x9fc01e78      0x690 build/CrossChasm_C5_Cellular/production/_ext/1472/usb.o
+                0x9fc01e79                usb_device_enqueue
+                0x9fc01f21                usb_isr
+                0x9fc02381                usb_register
+                0x9fc02391                usb_device_descriptor
+                0x9fc0239d                usb_configuration_descriptor
+                0x9fc023a9                usb_string_descriptor
+                0x9fc023b5                usb_uninitialize
+                0x9fc0248d                usb_initialize
+ .text          0x9fc02508      0x2bc build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+                0x9fc02645                cdcacm_print
+                0x9fc0273d                cdcacm_command_ack
+                0x9fc02765                cdcacm_register
+                0x9fc027c1                null_reset_cbfn
+
+.rodata         0x9fc027c4      0x1f8
+ .rodata        0x9fc027c4      0x1f8 build/CrossChasm_C5_Cellular/production/_ext/1472/main.o
+
+.dinit          0x9fc029bc       0xa0
+ .dinit         0x9fc029bc       0xa0 data_init
+
+.rodata         0x9fc02a5c       0x90
+ .rodata        0x9fc02a5c       0x90 build/CrossChasm_C5_Cellular/production/_ext/1472/cdcacm.o
+
+.text           0x9fc02aec       0x10
+ .text          0x9fc02aec       0x10 build/CrossChasm_C5_Cellular/production/_ext/1472/crt0.o
+                0x9fc02af4                __crt0_exit
+
+.text%z11       0x00000000        0x0
+ .text          0x00000000        0x0 c:/program files (x86)/microchip/xc32/v1.33/bin/bin/../../lib/gcc/pic32mx/4.5.2/../../../../pic32mx/lib/./proc/32MX795F512H\processor.o
