@@ -2327,17 +2327,19 @@ RETVAL otaloader() {
 
     RETVAL ret = None;
     unsigned int state = 0;
+    unsigned int otaStartTime = 0;
     unsigned int otaLoopTime = 0;
     unsigned int otaLastBlink = 0;
     unsigned int tryCount = 0;
 
     WDTCONSET = 0x8000; // enable watchdog
     InitUARTInterfaceSpecific(230400, false);
-    otaLoopTime = _CP0_GET_COUNT();
+    otaStartTime = _CP0_GET_COUNT();
 
     while(ret != Success && ret != Failed)
     {
         WDTCONSET = 0x01; // service watchdog
+        otaLoopTime = _CP0_GET_COUNT();
         if ((otaLoopTime - otaLastBlink) >= ((CORE_TIMER_TICKS_PER_MILLISECOND  * 63)) && state > 0)
         {
             // blink the heartbeat LED
@@ -2357,7 +2359,7 @@ RETVAL otaloader() {
                     InitUARTInterfaceSpecific(230400, true);
                     state = 1;
                 }
-                else if(_CP0_GET_COUNT() - otaLoopTime > (CORE_TIMER_TICKS_PER_MILLISECOND  * OTA_LOADER_CHECK_WAIT_MS))
+                else if(_CP0_GET_COUNT() - otaStartTime > (CORE_TIMER_TICKS_PER_MILLISECOND  * OTA_LOADER_CHECK_WAIT_MS))
                 {
                     ret = Failed;
                 }
