@@ -11,7 +11,7 @@
 
 #ifndef MAIN_INCLUDED
 
-#define BOOTLOADERVER               0x02000108ul
+#define BOOTLOADERVER               0x02000208ul
 #define NULL                        ((void*)0)
 #define ALLF                        (0xFFFFFFFF)
 #define cbRAMReservedForDebugger    0x200ul

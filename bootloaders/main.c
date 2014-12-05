@@ -26,12 +26,15 @@ RETVAL telit_makebackup();
 bool telit_initialized = false;
 bool FlashProgramming = false;
 RETVAL hexloader();
-uint16 crc16Reflected(unsigned char* data, unsigned int len);
+void crc16Init();
+void crc16Add(unsigned char* data, unsigned int len);
+uint16 crc16Reflected();
 unsigned int UpgradeFromModem(unsigned char* data, unsigned int len);
 bool telit_socketstatus();
 bool telit_readsocket(unsigned char** data, unsigned int* len);
 bool telit_setbaud115200();
 RETVAL otaloader();
+RETVAL otarestore();
 #endif
 
 // the stk500v2 state machine states
@@ -60,7 +63,7 @@ enum {
 
 #define STATUS_CMD_OK                       0x00
 
-#define SIGNATURE_BYTES 0x504943
+#define SIGNATURE_BYTES                     0x504943
 
 #define OTA_LOADER_CHECK_WAIT_MS            500
 
@@ -110,10 +113,11 @@ static uint32 addrBase = FLASH_START;
 static uint32 avrdudeAddrBase = FLASH_START;
 static uint32 cbSkipRam = ((uint32) &_RAM_SKIP_SIZE);
 
+static bool try_to_restore = false;
+static bool restoring = false;
+
 int main()  // we're called directly by Crt0.S
 {
-    RETVAL otaloader_status = None;
-
     ASSERT(sizeof(byte) == 1);
     ASSERT(sizeof(uint16) == 2);
     ASSERT(sizeof(uint32) == 4);
@@ -146,6 +150,7 @@ int main()  // we're called directly by Crt0.S
 
     // Determine if there is anything loaded in flash
     fLoadProgramFromFlash = fIsUserAppLoadedInFlash;
+    try_to_restore = !fIsUserAppLoadedInFlash;
 
     // we have 3 conditions
 
@@ -188,7 +193,7 @@ int main()  // we're called directly by Crt0.S
         // we blink at twice the speed when downloading, thus the divide by 2 shift with active
         // In reality, when downloading starts the boot LED is erratic; look at the download LED
         // to see if you are downloading.
-        if ((tLoopTime - tLastBlink) >= ((CORE_TIMER_TICKS_PER_MILLISECOND  * 250) >> active)) {
+        if ((tLoopTime - tLastBlink) >= ((CORE_TIMER_TICKS_PER_MILLISECOND  * 250) >> (active || restoring))) {
 
             // blink the heartbeat LED
             BootLED_Toggle();
@@ -197,10 +202,24 @@ int main()  // we're called directly by Crt0.S
             tLastBlink = tLoopTime;
         }
 
+        // try to restore an image backup if there's no app
+        //// what if we just reflashed the bootloader and there's an old image we don't want??? well there's ~10 seconds that's more than one usually gets
+        if(try_to_restore && !active)
+        {
+            if(otarestore() == Success && fIsUserAppLoadedInFlash)
+            {
+                ExecuteApp();
+            }
+        }
+        else
+        {
+            MODEM_OFF();
+        }
+
         // See if we should jump to the application in flash
         // If we just loaded an application via the Stk500v2Interface, we know there is an applicaiton
         // in flash and we can jump right to it now.
-        if( fLoaded ||
+        if( (fLoaded ||
 
             // If a program button is used, fLoadProgramFromFlash will be set false
             // as a program button will instruct to either immediately load from flash
@@ -217,22 +236,25 @@ int main()  // we're called directly by Crt0.S
             // flash, fLoadProgramFromFlash will be false and we wait until something is downloaded
             // via stk500v2 and fLoaded becomes true.
            ((tLoopTime - tLoopStart) >= (LISTEN_BEFORE_LOAD * CORE_TIMER_TICKS_PER_MILLISECOND))
-          )) {
+          )) && !restoring) {
             // launch the application!
             ExecuteApp();
         }
 
-        // There are no interrupts, so we must poll
-        // the stk500v2 interface to see if a character came in.
-        // This may be from the UART or USB input (depending on what is being used).
-        stk500v2_isr();
+        if(!restoring)
+        {
+            // There are no interrupts, so we must poll
+            // the stk500v2 interface to see if a character came in.
+            // This may be from the UART or USB input (depending on what is being used).
+            stk500v2_isr();
 
-        // if we've received an stk500v2 request...
-        // that is, something come in and we need to process it
-        if (ready) {
-            // process it
-            avrbl_message(request+REQUEST_OFFSET, requesti);
-            ready = false;
+            // if we've received an stk500v2 request...
+            // that is, something come in and we need to process it
+            if (ready) {
+                // process it
+                avrbl_message(request+REQUEST_OFFSET, requesti);
+                ready = false;
+            }
         }
     }
 
@@ -1050,8 +1072,9 @@ int WriteHexRecord2Flash(uint8* HexRecord) {
 
     static T_HEX_RECORD HexRecordSt;
     static E_REC eRecord;
+    static UINT userAppAddrWord = 0;
     UINT8 Checksum = 0;
-    UINT8 i;
+    UINT i;
     UINT WrData;
     void* ProgAddress;
     uint16 localCrc = 0;
@@ -1108,7 +1131,16 @@ int WriteHexRecord2Flash(uint8* HexRecord) {
                         // erase flash page (if needed and not already done)
                         justInTimeFlashErase((uint32)ProgAddress, (uint32)ProgAddress+4);
                         // Write the data into flash.
-                        flashWriteUint32((uint32)ProgAddress, (uint32*)&WrData, 1);
+                        // *** if this is the WORD stored at USER_APP_ADDR, buffer it in RAM for now
+                        // so we can verify the image before marking the app as valid
+                        if(ProgAddress == (void*)USER_APP_ADDR)
+                        {
+                            userAppAddrWord = WrData;
+                        }
+                        else
+                        {
+                            flashWriteUint32((uint32)ProgAddress, (uint32*)&WrData, 1);
+                        }
                     }
 
                     // Increment the address.
@@ -1186,9 +1218,26 @@ int WriteHexRecord2Flash(uint8* HexRecord) {
                     eRecord.crc += HexRecordSt.Data[i];
                 }
 
-                localCrc = crc16Reflected((unsigned char*)eRecord.startAddress, eRecord.length);
+                // crunch image crc (substituting the buffered USER_APP_ADDR word)
+                crc16Init();
+                for(i = eRecord.startAddress; i < eRecord.startAddress+eRecord.length; i+=4)
+                {
+                    if(i == USER_APP_ADDR)
+                    {
+                        crc16Add((unsigned char*)&userAppAddrWord, 4);
+                    }
+                    else
+                    {
+                        crc16Add((unsigned char*)i, 4);
+                    }
+                }
+                localCrc = crc16Reflected();
                 if(localCrc == eRecord.crc)
+                {
+                    // write the user app address and return
+                    flashWriteUint32((uint32)USER_APP_ADDR, (uint32*)&userAppAddrWord, 1);
                     return 0xFF;
+                }
                 else
                     return 0x00;
 
@@ -1381,11 +1430,11 @@ static const unsigned int baud115200_len= 15;
 
 /*STRING HELPERS*/
 
-static bool isalpha(unsigned char c) {
+static bool isCharAlpha(unsigned char c) {
     return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }
 
-static bool isupper(unsigned char c) {
+static bool isCharUpper(unsigned char c) {
     return (c >= 'A' && c <= 'Z');
 }
 
@@ -1416,9 +1465,9 @@ static unsigned int string_to_int(unsigned char* s, uint8 base) {
                 return 0;
                 break;
         }
-        if(isalpha(*s))
+        if(isCharAlpha(*s))
         {
-            val += isupper(*s) ? *s - 'A' + 10 : *s - 'a' + 10;
+            val += isCharUpper(*s) ? *s - 'A' + 10 : *s - 'a' + 10;
         }
         else
         {
@@ -1444,10 +1493,10 @@ typedef struct {
 
 static _FIFO fifo;
 
-unsigned char* uart_find(unsigned char* s, unsigned char* f) {
+unsigned char* uart_find(unsigned char* s, const char* f) {
 
     unsigned char* sp = s;
-    unsigned char* fp = f;
+    const char* fp = f;
     unsigned int i = 0;
 
     while(*sp && sp < fifo.buffer+fifo.head)
@@ -1498,7 +1547,7 @@ unsigned char* finder(unsigned char* s, unsigned char* f, unsigned char* m) {
     return NULL;
 }
 
-void uart_tx(unsigned char* data, unsigned int len) {
+void uart_tx(const char* data, unsigned int len) {
     int i;
     for (i = 0; i < len; i++)
     {
@@ -1597,24 +1646,29 @@ static const uint16 crc_table[16] = {
     0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
     0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef};
 
-uint16 crc16Reflected(unsigned char* data, unsigned int len) {
+// crc value
+unsigned short int gCrc = 0xFFFF;
 
-    unsigned short int crc = 0xFFFF;
+void crc16Init() {
+    gCrc = 0xFFFF;
+}
+
+void crc16Add(unsigned char* data, unsigned int len) {
     unsigned int i = 0;
     unsigned char rdata = 0;
-
     while(len--)
     {
         rdata = BitReverseTable256[*data];
-        i = (crc >> 12) ^ (rdata >> 4);
-        crc = crc_table[i & 0x0F] ^ (crc << 4);
-        i = (crc >> 12) ^ (rdata >> 0);
-        crc = crc_table[i & 0x0F] ^ (crc << 4);
+        i = (gCrc >> 12) ^ (rdata >> 4);
+        gCrc = crc_table[i & 0x0F] ^ (gCrc << 4);
+        i = (gCrc >> 12) ^ (rdata >> 0);
+        gCrc = crc_table[i & 0x0F] ^ (gCrc << 4);
         data++;
     }
+}
 
-    return BitReverseTable256[(unsigned char)((crc & 0xFF00) >> 8)] + (BitReverseTable256[(unsigned char)(crc & 0x00FF)] << 8);
-
+uint16 crc16Reflected() {
+    return BitReverseTable256[(unsigned char)((gCrc & 0xFF00) >> 8)] + (BitReverseTable256[(unsigned char)(gCrc & 0x00FF)] << 8);
 }
 
 /*TELIT BASIC FUNCTIONS*/
@@ -1672,7 +1726,6 @@ bool telit_readsocket(unsigned char** data, unsigned int* len) {
             uart_clear();
             uart_tx(socketread, socketread_len);
             state = 1;
-            //uart_tx("X",1);
             break;
 
         case 1:
@@ -1681,7 +1734,6 @@ bool telit_readsocket(unsigned char** data, unsigned int* len) {
             uart_rx();
             if(p = uart_find(fifo.buffer, "#SRECV:"), p)
             {
-                //uart_tx("Y",1);
                 p += 10;
                 state = 2;
             }
@@ -1693,7 +1745,6 @@ bool telit_readsocket(unsigned char** data, unsigned int* len) {
             uart_rx();
             if(p2 = uart_find(p, "\r\n"), p2)
             {
-                //uart_tx("Z",1);
                 ret_len = string_to_int(p, 10);
                 p2 += 2;
                 state = 3;
@@ -1705,7 +1756,6 @@ bool telit_readsocket(unsigned char** data, unsigned int* len) {
 
             // p2 points to start of socket data
             // read out the reported length
-            //uart_tx("J",1);
             if(uart_rx())
                 i++;
             if(i >= ret_len)
@@ -1751,102 +1801,6 @@ bool telit_cflo() {
         case 1:
 
             // wait for reply
-            uart_rx();
-            if(uart_find(fifo.buffer, "\r\n\r\nOK\r\n"))
-            {
-                uart_clear();
-                state = 2;
-            }
-
-            break;
-
-        default:
-            state = 0;
-            break;
-    }
-
-    return state == 2;
-
-}
-
-bool telit_initialize() {
-
-    static unsigned int state = 0;
-    static unsigned int timer = 0;
-
-    switch(state)
-    {
-        case 0:
-
-            MODEM_ON();
-            START_TIMER(timer);
-            state = 1;
-
-            break;
-
-        case 1:
-            if(!CHECK_TIMER(timer, 8500) == 0)
-                break;
-            state = 2;
-
-            break;
-
-        case 2:
-
-            if(telit_cflo())
-            {
-                START_TIMER(timer);
-                state = 3;
-            }
-
-            break;
-
-        case 3:
-
-            if(CHECK_TIMER(timer, 500) == 0)
-                break;
-
-            if(telit_setbaud115200())
-            {
-                START_TIMER(timer);
-                state = 4;
-            }
-
-            break;
-
-        case 4:
-
-            if(CHECK_TIMER(timer, 500) == 1)
-            {
-                telit_initialized = true;
-                state = 5;
-            }
-
-            break;
-
-        default:
-            state = 0;
-            break;
-    }
-
-    return state == 5;
-
-}
-
-bool telit_setbaud115200() {
-
-    static unsigned int state = 0;
-
-    switch(state)
-    {
-        case 0:
-
-            uart_clear();
-            uart_tx(baud115200, baud115200_len);
-            state = 1;
-
-        case 1:
-
             uart_rx();
             if(uart_find(fifo.buffer, "\r\n\r\nOK\r\n"))
             {
@@ -1973,7 +1927,9 @@ RETVAL telit_findbackup() {
             ret = Working;
             START_TIMER(timeout);
 
-            myCrc = crc16Reflected((unsigned char*)FLASH_START, FLASH_BYTES);
+            crc16Init();
+            crc16Add((unsigned char*)FLASH_START, FLASH_BYTES);
+            myCrc = crc16Reflected();
             state = 1;
             break;
 
@@ -1982,9 +1938,6 @@ RETVAL telit_findbackup() {
             subret = telit_getbackupinfo(&found_size, &found_crc);
             if(subret == Success)
             {
-                #warning "test"
-                //uart_tx(&found_crc, 2);
-                //uart_tx(&myCrc, 2);
                 if(found_size == FLASH_BYTES && found_crc == myCrc)
                 {
                     state = 2;
@@ -2033,7 +1986,9 @@ RETVAL telit_makebackup() {
             START_TIMER(timeout);
 
             // get my crc
-            myCrc = crc16Reflected((unsigned char*)FLASH_START, FLASH_BYTES);
+            crc16Init();
+            crc16Add((unsigned char*)FLASH_START, FLASH_BYTES);
+            myCrc = crc16Reflected();
             uart_clear();
             state = 1;
 
@@ -2076,7 +2031,7 @@ RETVAL telit_makebackup() {
         case 4:
 
             // dump FLASH memory to script (in chunks to avoid long blocking)
-            uart_tx(FLASH_START + i, 1024);
+            uart_tx((const char*)(FLASH_START + i), 1024);
             i += 1024;
             if(i == FLASH_BYTES)
                 state = 5;
@@ -2133,6 +2088,8 @@ __attribute__((nomips16)) RETVAL telit_restorebackup() {
 
     static unsigned int timeout = 0;
 
+    static unsigned int userAppAddrWord = 0;
+
     switch(state)
     {
         case 0:
@@ -2185,17 +2142,24 @@ __attribute__((nomips16)) RETVAL telit_restorebackup() {
             uart_rx();
             if(!uart_rx_empty())
             {
-                //flashunit <<= 8;
                 flashunit += ((uint32)uart_rx_pop() << 8*i);
                 ++i;
                 if(i == 4)
                 {
-                    justInTimeFlashErase(pflash, pflash+sizeof(unsigned int));
-                    flashWriteUint32((uint32)pflash, (uint32*)&flashunit, 1);
+                    if(pflash == USER_APP_ADDR)
+                    {
+                        userAppAddrWord = flashunit;
+                    }
+                    else
+                    {
+                        justInTimeFlashErase(pflash, pflash+sizeof(unsigned int));
+                        flashWriteUint32((uint32)pflash, (uint32*)&flashunit, 1);
+                    }
                     flashunit = 0;
                     i = 0;
                     pflash+=sizeof(unsigned int);
-                    if(pflash == FLASH_START + FLASH_BYTES)
+
+                    if(pflash >= FLASH_START + FLASH_BYTES)
                     {
                         uart_clear();
                         state = 4;
@@ -2220,9 +2184,23 @@ __attribute__((nomips16)) RETVAL telit_restorebackup() {
         case 5:
 
             // confirm FLASH crc
-            myCrc = crc16Reflected((unsigned char*)FLASH_START, FLASH_BYTES);
+            crc16Init();
+            for(i = FLASH_START; i < FLASH_START+FLASH_BYTES; i+=4)
+            {
+                if(i == USER_APP_ADDR)
+                {
+                    crc16Add((unsigned char*)&userAppAddrWord, 4);
+                }
+                else
+                {
+                    crc16Add((unsigned char*)i, 4);
+                }
+            }
+            myCrc = crc16Reflected();
             if(myCrc == script_crc)
             {
+                // write the USER_APP_ADDR and return
+                flashWriteUint32((uint32)USER_APP_ADDR, (uint32*)&userAppAddrWord, 1);
                 state = 6;
                 ret = Success;
             }
@@ -2295,7 +2273,7 @@ RETVAL hexloader() {
                     switch(hexStatus)
                     {
                         case 0x00:
-                            flashErasePage(USER_APP_ADDR);
+                            flashErasePage(USER_APP_ADDR); // invalidate the user app
                             ret = Failed;
                             state = 2;
                             break;
@@ -2465,6 +2443,120 @@ RETVAL otaloader() {
     MODEM_OFF();
     UninitUARTInterface();
     WDTCONCLR = 0x8000; // disable watchdog
+
+    return ret;
+
+}
+
+RETVAL otarestore() {
+
+    static RETVAL ret = None;
+    static int state = 0;
+    static unsigned int timer = 0;
+    static unsigned int found_size = 0;
+    static unsigned int found_crc = 0;
+
+    switch(state)
+    {
+        case -2:
+
+            ret = Working;
+
+            // power OFF modem
+            MODEM_OFF();
+            START_TIMER(timer);
+            state = -1;
+
+            break;
+
+        case -1:
+
+            if(CHECK_TIMER(timer, 1000) == 0)
+                break;
+
+            state = 0;
+            
+            break;
+
+        case 0:
+
+            ret = Working;
+
+            // make sure UART is ready
+            UninitUARTInterface();
+            InitUARTInterfaceSpecific(230400, true);
+
+            // power ON modem
+            MODEM_ON();
+            START_TIMER(timer);
+            state = 1;
+
+            break;
+
+        case 1:
+
+            // wait for power up timer
+            if(CHECK_TIMER(timer, 7500) == 0)
+                break;
+
+            state = 2;
+
+            break;
+
+        case 2:
+
+            // try to restore a backup
+            switch(telit_getbackupinfo(&found_size, &found_crc))
+            {
+                case Success:
+
+                    if(found_size == FLASH_BYTES)
+                    {
+                        state = 3;
+                    }
+                    else
+                    {
+                        state = -2;
+                        ret = Failed;
+                    }
+
+                    break;
+                    
+                case Failed:
+
+                    state = -2;
+
+                    break;
+            }
+
+            break;
+
+        case 3:
+
+            restoring = true;
+            switch(telit_restorebackup())
+            {
+                case Success:
+                    state = 0;
+                    ret = Success;
+                    break;
+                case Failed:
+                    state = -2;
+                    ret = Failed;
+                    break;
+            }
+
+            break;
+
+    }
+
+    if(ret == Failed)
+        MODEM_OFF();
+    else if(ret == Success)
+    {
+        MODEM_OFF();
+        restoring = false;
+    }
 
     return ret;
 
