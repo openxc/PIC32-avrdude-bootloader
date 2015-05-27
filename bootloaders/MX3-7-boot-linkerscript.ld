@@ -36,14 +36,14 @@ MEMORY
   kseg1_boot_mem             : ORIGIN = 0xBFC00000, LENGTH = 0x0380
   debug_vectors				 : ORIGIN = 0xBFC00380, LENGTH = 0x110
   kseg0_boot_mem             : ORIGIN = 0x9FC00490, LENGTH = 0x0
-  kseg0_program_mem    (rx)  : ORIGIN = 0x9FC00490, LENGTH = 0x2B50 /*0x2B6F??? was 0x1B60*/
-  exception_mem              : ORIGIN = 0xBFC02FE0, LENGTH = 0x10 /*0xBFC01FF0*/
-  debug_exec_mem             : ORIGIN = 0xBFC02000, LENGTH = 0x0 /*0xFF0*/
+  kseg0_program_mem    (rx)  : ORIGIN = 0x9FC00490, LENGTH = 0x1B60
+  exception_mem              : ORIGIN = 0xBFC01FF0, LENGTH = 0x10
+  debug_exec_mem             : ORIGIN = 0xBFC02000, LENGTH = 0xFF0
   config3                    : ORIGIN = 0xBFC02FF0, LENGTH = 0x4
   config2                    : ORIGIN = 0xBFC02FF4, LENGTH = 0x4
   config1                    : ORIGIN = 0xBFC02FF8, LENGTH = 0x4
   config0                    : ORIGIN = 0xBFC02FFC, LENGTH = 0x4
-  kseg1_data_mem       (w!x) : ORIGIN = 0xA0000000, LENGTH = 0x3000
+  kseg1_data_mem       (w!x) : ORIGIN = 0xA0000000, LENGTH = 0x2000
   sfrs                       : ORIGIN = 0xBF800000, LENGTH = 0x100000
   configsfrs                 : ORIGIN = 0xBFC02FF0, LENGTH = 0x10
 }
@@ -83,7 +83,7 @@ SECTIONS
   {
     KEEP(*(.reset))
 /*    KEEP(*(.startup)) */
-    KEEP(*(.reset.startup)) 
+    KEEP(*(.reset.startup))
   } > kseg1_boot_mem
 /*
   .bev_excpt _BEV_EXCPT_ADDR :
@@ -99,7 +99,7 @@ SECTIONS
   {
     KEEP(*(.startup))
   } > kseg0_boot_mem
-*/ 
+*/
   /* Code Sections - Note that input sections *(.text) and *(.text.*)
   ** are not mapped here. Starting in C32 v2.00, the best-fit allocator
   ** locates them, so that .text may flow around absolute sections
@@ -143,12 +143,12 @@ SECTIONS
   .eh_frame_hdr : { *(.eh_frame_hdr) }
   .eh_frame       : ONLY_IF_RO { KEEP (*(.eh_frame)) }
 
- 
+
    /*
 	* We always need to keep this space, if it is not
 	* used by the debugger, it is used by shared RAM
-	* with the loading sketch.	
-	*/	
+	* with the loading sketch.
+	*/
   .dbg_data ORIGIN(kseg1_data_mem) :
   {
    _skip_ram_space_addr = . ;
@@ -157,7 +157,7 @@ SECTIONS
 
    /*
 	* Now we need to reserve the max shared ram
-	*/	
+	*/
   .skip_ram_space :
   {
     . += (_RAM_SKIP_SIZE - SIZEOF(.dbg_data));

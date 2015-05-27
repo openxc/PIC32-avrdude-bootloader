@@ -18,6 +18,7 @@
       <itemPath>../MX1-2-USB-boot-linkerscript.ld</itemPath>
       <itemPath>../MX3-7-split-boot-linkerscript.ld</itemPath>
       <itemPath>../MX1-2-boot-linkerscript.ld</itemPath>
+      <itemPath>../MX3-7-boot-linkerscript_nodebug.ld</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -4460,6 +4461,18 @@
         </C32Global>
       </item>
       <item path="../MX3-7-boot-linkerscript.ld" ex="true" overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
       </item>
       <item path="../MX3-7-split-boot-linkerscript.ld" ex="true" overriding="false">
         <C32>
