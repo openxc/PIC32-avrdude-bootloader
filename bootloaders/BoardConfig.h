@@ -2,7 +2,7 @@
 /*                                                                      */
 /*    BoardConfig.h   This configures board specific features           */
 /*                  for the stk500v2 avrdude/MPIDE PIC32                */
-/*                    compilient bootloader                             */
+/*                    compliant bootloader                             */
 /*                                                                      */
 /************************************************************************/
 /*    Author:     Keith Vogel                                           */
@@ -810,6 +810,81 @@
     #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
 
 //************************************************************************
+#elif defined(_BOARD_CROSSCHASM_C5_BTLE)
+
+#if defined(PUT_CONFIG_BITS_HERE)
+
+    //*    Oscillator Settings
+    #pragma config FNOSC        = PRIPLL                            // Oscillator selection
+    #pragma config POSCMOD      = XT                                // Primary oscillator mode
+    #pragma config FPLLIDIV     = DIV_2                             // PLL input divider
+    #pragma config FPLLMUL      = MUL_20                            // PLL multiplier
+    #pragma config FPLLODIV     = DIV_1                             // PLL output divider
+    #pragma config FPBDIV       = DIV_1                             // Peripheral bus clock divider
+    #pragma config FSOSCEN      = OFF                               // Secondary oscillator enable
+
+    //*    Clock control settings
+    #pragma config IESO         = OFF                               // Internal/external clock switchover
+    #pragma config FCKSM        = CSDCMD                            // Clock switching (CSx)/Clock monitor (CMx)
+    #pragma config OSCIOFNC     = OFF                               // Clock output on OSCO pin enable
+
+    //*    Other Peripheral Device settings
+    #pragma config FWDTEN       = OFF                               // Watchdog timer enable
+    #pragma config WDTPS        = PS1024                            // Watchdog timer postscaler
+
+    //*    Code Protection settings
+    #pragma config CP           = OFF                               // Code protection
+    #pragma config BWP          = OFF                               // Boot flash write protect
+    #pragma config PWP          = OFF                               // Program flash write protect
+
+    //*    Debug settings
+    #pragma config DEBUG = OFF
+    #pragma config ICESEL= ICS_PGx1                                 // ICE pin selection
+
+    //*    Other Peripheral Device settings
+    #pragma config FSRSSEL      = PRIORITY_7                        // SRS interrupt priority
+    #pragma config FCANIO       = ON                               // Standard/alternate CAN pin select (OFF=Alt)
+    #pragma config FETHIO       = ON                                // Standard/alternate ETH pin select (OFF=Alt)
+    #pragma config FMIIEN       = OFF                               // MII/RMII select (OFF=RMII)
+
+    //*    USB Settings
+    #pragma config UPLLEN       = ON                                // USB PLL enable
+    #pragma config UPLLIDIV     = DIV_2                             // USB PLL input divider
+    #pragma config FVBUSONIO    = OFF                               // VBUS pin control
+    #pragma config FUSBIDIO     = OFF                               // USBID pin control
+#endif
+
+    #define CAPABILITIES    (blCapDownloadLED | blCapUSBInterface | blCapAutoResetListening | CAPCOMMON)
+
+    // Boot LED
+    #define EnableBootLED()             {DDPCONbits.JTAGEN = 0; TRISBCLR = (1 << 12);}
+    #define DisableBootLED()            (TRISBSET = (1 << 12))
+    #define BootLED_Toggle()            (LATBINV = (1 << 12))
+    #define BootLED_On()                (LATBCLR = (1 << 12))
+    #define BootLED_Off()               (LATBSET = (1 << 12))
+
+    // Download LED
+    #define EnableDownLoadLED()         {DDPCONbits.JTAGEN = 0; TRISBCLR = (1 << 13);}
+    #define DisableDownLoadLED()        (TRISBSET = (1 << 13))
+    #define DownloadLED_Toggle()        (LATBINV = (1 << 13))
+    #define DownloadLED_On()            (LATBCLR = (1 << 13))
+    #define DownloadLED_Off()           (LATBSET = (1 << 13))
+
+    // Other capabilities
+    #define LISTEN_BEFORE_LOAD          5000
+
+    #define _CPU_NAME_                  "32MX795F512H"
+    #define VEND                        vendDigilent
+    #define PROD                        prodChipKITMax32
+    #define F_CPU                       80000000UL
+    #define F_PBUS                      F_CPU
+
+    #define FLASH_BYTES                 0x80000                     // 512K
+    #define FLASH_PAGE_SIZE             4096
+    #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
+
+//************************************************************************
+
 #elif defined(_BOARD_CROSSCHASM_CELLULAR_C5_)
 
 #if defined(PUT_CONFIG_BITS_HERE)
