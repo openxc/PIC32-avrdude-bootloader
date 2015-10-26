@@ -93,8 +93,8 @@ int main()  // we're called directly by Crt0.S
     ASSERT(sizeof(uint32) == 4);
 
     ramHeader.rcon = RCON;
-    InitLEDsAndButtons();
-
+    InitLEDsAndButtons();   
+    
     // sometimes there is a debugger circuit on the board that needs to intialize and will
     // pull the reset line after 6 seconds or so and abruptly abort the loaded applicaiton.
     // this pause is put in for a Power On Reset only and waits for the debug circuit to come up
@@ -335,12 +335,10 @@ avrbl_message(byte *request, int size)
                 //* read one byte from flash
                 //* 0x20 is read odd byte
                 //* 0x28 is read even byte
-
                 //* read the even address
                 address = (request[5]<<8)|(request[6]);
                 //* the address is in 16 bit words
                 address = address<<1;
-
                 if (request[4] == 0x20) {
                     reply[replyi++] = *(uint16 *)(FLASH_START+address);
                 } else {
@@ -496,7 +494,7 @@ avrbl_message(byte *request, int size)
 **  Notes:
 **
 **		If there is a header, it will jump to the location specified by the header
-**		Remeber that UserApp is set by default to the jump address assigned in BoardConfig.h
+**		Remember that UserApp is set by default to the jump address assigned in BoardConfig.h
 */
 static void ExecuteApp(void)
 {
@@ -530,12 +528,12 @@ static void ExecuteApp(void)
         // now load the RAM HEADER DATA
         // check to see if we have header info? We use the cbHeader as a version number
         if( pHeaderInfo->cbHeader >= OFFSETOF(IMAGE_HEADER_INFO,cbBlPreservedRam) &&
-            // is the header in our perserved space? Can we at least save the number of bytes written to the header?
+            // is the header in our reserved space? Can we at least save the number of bytes written to the header?
             ((uint32) pHeaderInfo->pRamHeader) <= (((uint32) &_skip_ram_space_end_adder) - sizeof(uint32)) )
         {
             uint32 cb = MIN(pHeaderInfo->cbRamHeader, sizeof(RAM_HEADER_INFO)); // only copy what we the bootloader and sketch both know
 
-            // and make sure we don't walk on our (the bootloaders) own memory
+            // and make sure we don't walk on our (the bootloader's) own memory
             cb = MIN(cb, (((uint32) &_skip_ram_space_end_adder) - ((uint32) pHeaderInfo->pRamHeader)));
 
             // store how much the bootloader is going to write.

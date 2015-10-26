@@ -2,7 +2,7 @@
 /*                                                                      */
 /*    BoardConfig.h   This configures board specific features           */
 /*                  for the stk500v2 avrdude/MPIDE PIC32                */
-/*                    compilient bootloader                             */
+/*                    compliant bootloader                             */
 /*                                                                      */
 /************************************************************************/
 /*    Author:     Keith Vogel                                           */
@@ -808,6 +808,257 @@
     #define FLASH_BYTES                 0x80000                     // 512K
     #define FLASH_PAGE_SIZE             4096
     #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
+
+//************************************************************************
+#elif defined(_BOARD_CROSSCHASM_C5_BTLE)
+
+#if defined(PUT_CONFIG_BITS_HERE)
+
+    //*    Oscillator Settings
+    #pragma config FNOSC        = PRIPLL                            // Oscillator selection
+    #pragma config POSCMOD      = XT                                // Primary oscillator mode
+    #pragma config FPLLIDIV     = DIV_2                             // PLL input divider
+    #pragma config FPLLMUL      = MUL_20                            // PLL multiplier
+    #pragma config FPLLODIV     = DIV_1                             // PLL output divider
+    #pragma config FPBDIV       = DIV_1                             // Peripheral bus clock divider
+    #pragma config FSOSCEN      = OFF                               // Secondary oscillator enable
+
+    //*    Clock control settings
+    #pragma config IESO         = OFF                               // Internal/external clock switchover
+    #pragma config FCKSM        = CSDCMD                            // Clock switching (CSx)/Clock monitor (CMx)
+    #pragma config OSCIOFNC     = OFF                               // Clock output on OSCO pin enable
+
+    //*    Other Peripheral Device settings
+    #pragma config FWDTEN       = OFF                               // Watchdog timer enable
+    #pragma config WDTPS        = PS1024                            // Watchdog timer postscaler
+
+    //*    Code Protection settings
+    #pragma config CP           = OFF                               // Code protection
+    #pragma config BWP          = OFF                               // Boot flash write protect
+    #pragma config PWP          = OFF                               // Program flash write protect
+
+    //*    Debug settings
+    #pragma config DEBUG = OFF
+    #pragma config ICESEL= ICS_PGx1                                 // ICE pin selection
+
+    //*    Other Peripheral Device settings
+    #pragma config FSRSSEL      = PRIORITY_7                        // SRS interrupt priority
+    #pragma config FCANIO       = ON                               // Standard/alternate CAN pin select (OFF=Alt)
+    #pragma config FETHIO       = ON                                // Standard/alternate ETH pin select (OFF=Alt)
+    #pragma config FMIIEN       = OFF                               // MII/RMII select (OFF=RMII)
+
+    //*    USB Settings
+    #pragma config UPLLEN       = ON                                // USB PLL enable
+    #pragma config UPLLIDIV     = DIV_2                             // USB PLL input divider
+    #pragma config FVBUSONIO    = OFF                               // VBUS pin control
+    #pragma config FUSBIDIO     = OFF                               // USBID pin control
+#endif
+
+    #define CAPABILITIES    (blCapDownloadLED | blCapUSBInterface | blCapAutoResetListening | CAPCOMMON)
+
+    // Boot LED
+    #define EnableBootLED()             {DDPCONbits.JTAGEN = 0; TRISBCLR = (1 << 12);}
+    #define DisableBootLED()            (TRISBSET = (1 << 12))
+    #define BootLED_Toggle()            (LATBINV = (1 << 12))
+    #define BootLED_On()                (LATBCLR = (1 << 12))
+    #define BootLED_Off()               (LATBSET = (1 << 12))
+
+    // Download LED
+    #define EnableDownLoadLED()         {DDPCONbits.JTAGEN = 0; TRISBCLR = (1 << 13);}
+    #define DisableDownLoadLED()        (TRISBSET = (1 << 13))
+    #define DownloadLED_Toggle()        (LATBINV = (1 << 13))
+    #define DownloadLED_On()            (LATBCLR = (1 << 13))
+    #define DownloadLED_Off()           (LATBSET = (1 << 13))
+
+    // Other capabilities
+    #define LISTEN_BEFORE_LOAD          5000
+
+    #define _CPU_NAME_                  "32MX795F512H"
+    #define VEND                        vendDigilent
+    #define PROD                        prodChipKITMax32
+    #define F_CPU                       80000000UL
+    #define F_PBUS                      F_CPU
+
+    #define FLASH_BYTES                 0x80000                     // 512K
+    #define FLASH_PAGE_SIZE             4096
+    #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
+
+//************************************************************************
+
+#elif defined(_BOARD_CROSSCHASM_CELLULAR_C5_)
+
+#if defined(PUT_CONFIG_BITS_HERE)
+
+    //*    Oscillator Settings
+    #pragma config FNOSC        = PRIPLL                            // Oscillator selection
+    #pragma config POSCMOD      = XT                                // Primary oscillator mode
+    #pragma config FPLLIDIV     = DIV_2                             // PLL input divider
+    #pragma config FPLLMUL      = MUL_20                            // PLL multiplier
+    #pragma config FPLLODIV     = DIV_1                             // PLL output divider
+    #pragma config FPBDIV       = DIV_1                             // Peripheral bus clock divider
+    #pragma config FSOSCEN      = OFF                               // Secondary oscillator enable
+
+    //*    Clock control settings
+    #pragma config IESO         = OFF                               // Internal/external clock switchover
+    #pragma config FCKSM        = CSDCMD                            // Clock switching (CSx)/Clock monitor (CMx)
+    #pragma config OSCIOFNC     = OFF                               // Clock output on OSCO pin enable
+
+    //*    Other Peripheral Device settings
+    #pragma config FWDTEN       = OFF                               // Watchdog timer enable
+    #pragma config WDTPS        = PS8192                            // Watchdog timer postscaler
+
+    //*    Code Protection settings
+    #pragma config CP           = OFF                               // Code protection
+    #pragma config BWP          = OFF                               // Boot flash write protect
+    #pragma config PWP          = OFF                               // Program flash write protect
+
+    //*    Debug settings
+    #pragma config ICESEL       = ICS_PGx1                          // ICE pin selection
+
+    //*    Other Peripheral Device settings
+    #pragma config FSRSSEL      = PRIORITY_7                        // SRS interrupt priority
+    #pragma config FCANIO       = ON                               // Standard/alternate CAN pin select (OFF=Alt)
+    #pragma config FETHIO       = ON                                // Standard/alternate ETH pin select (OFF=Alt)
+    #pragma config FMIIEN       = OFF                               // MII/RMII select (OFF=RMII)
+
+    //*    USB Settings
+    #pragma config UPLLEN       = ON                                // USB PLL enable
+    #pragma config UPLLIDIV     = DIV_2                             // USB PLL input divider
+    #pragma config FVBUSONIO    = OFF                               // VBUS pin control
+    #pragma config FUSBIDIO     = OFF                               // USBID pin control
+#endif
+
+    #define CAPABILITIES    (blCapDownloadLED | blCapUSBInterface | blCapAutoResetListening | CAPCOMMON)
+
+    // Boot LED
+    #define EnableBootLED()             (TRISCCLR = (1 << 13))
+    #define DisableBootLED()            (TRISCSET = (1 << 13))
+    #define BootLED_Toggle()            (LATCINV = (1 << 13))
+    #define BootLED_On()                (LATCSET = (1 << 13))
+    #define BootLED_Off()               (LATCCLR = (1 << 13))
+
+    // Download LED
+    #define EnableDownLoadLED()         (TRISCCLR = (1 << 14))
+    #define DisableDownLoadLED()        (TRISCSET = (1 << 14))
+    #define DownloadLED_Toggle()        (LATCINV = (1 << 14))
+    #define DownloadLED_On()            (LATCSET = (1 << 14))
+    #define DownloadLED_Off()           (LATCCLR = (1 << 14))
+
+    // Other capabilities
+    #define LISTEN_BEFORE_LOAD          5000
+
+    #define _CPU_NAME_                  "32MX795F512H"
+    #define VEND                        vendDigilent
+    #define PROD                        prodChipKITMax32
+    #define F_CPU                       80000000UL
+    #define F_PBUS                      F_CPU
+
+    #define FLASH_BYTES                 0x80000                     // 512K
+    #define FLASH_PAGE_SIZE             4096
+    #define LoadFlashWaitStates()       (CHECON = 2)                // 0 for 0-30Mhz, 1 for 31-60Mhz, 2 for 61-80Mhz
+
+    #define BAUDRATE    230400
+
+    #define UMODE       U1MODE
+    #define USTA        U1STA
+    #define UBRG        U1BRG
+    #define UMODEbits   U1MODEbits
+    #define USTAbits    U1STAbits
+    #define UTXREG      U1TXREG
+    #define URXREG      U1RXREG
+
+    #define MODEM_ON()    do{TRISEbits.TRISE5 = 0; PORTEbits.RE5 = 1;}while(0)
+    #define MODEM_OFF()   do{TRISEbits.TRISE5 = 0; PORTEbits.RE5 = 0;}while(0)
+
+    #include "serial.h"
+
+    //#define stk500v2_isr                serial_isr
+    //#define stk500v2_print              serial_print
+
+    static inline void __attribute__((always_inline)) InitUARTInterface(void)
+    {
+        // if the UART is mapped via Peripheral Pin Selection
+        #if defined(USE_PPS_UART)
+
+            // The unlock code is documented as required yet does not seem to be needed.
+            //        SYSKEY = 0;
+            //        SYSKEY = 0xAA996655;
+            //        SYSKEY = 0x556699AA;
+            //        CFGCONbits.IOLOCK = 0;            // unlock PPS
+            // End of seemingly unneeded unlock code
+
+            // modify PPS
+            UARTMapRX();
+            UARTMapTX();
+
+            // The lock code is documented as required yet does not seem to be needed.
+            //        CFGCONbits.IOLOCK = 1;            // lock PPS
+            //        SYSKEY = 0x33333333;
+            // End of seemingly unneeded lock code
+
+        #endif
+
+    	//*	Init UART
+    	//*	set baudrate and enable USART receiver and transmiter without interrupts
+    	UMODE	=	(UART_ENABLE);
+        UMODEbits.UEN = 2;
+    	USTA	=	(UART_RX_ENABLE | UART_TX_ENABLE);
+    	UBRG	=	((F_PBUS / (16 * BAUDRATE))-1);	// calculate actual BAUD generate value.
+
+    	//*	ok, the serial port is initialized, clear any data that may be there
+    	while (USTAbits.URXDA)
+    	{
+    	    byte value = 0;
+    		value = URXREG;
+    	}
+    }
+
+    static inline void __attribute__((always_inline)) InitUARTInterfaceSpecific(unsigned int baudr, bool flowc)
+    {
+        // if the UART is mapped via Peripheral Pin Selection
+        #if defined(USE_PPS_UART)
+
+            // The unlock code is documented as required yet does not seem to be needed.
+            //        SYSKEY = 0;
+            //        SYSKEY = 0xAA996655;
+            //        SYSKEY = 0x556699AA;
+            //        CFGCONbits.IOLOCK = 0;            // unlock PPS
+            // End of seemingly unneeded unlock code
+
+            // modify PPS
+            UARTMapRX();
+            UARTMapTX();
+
+            // The lock code is documented as required yet does not seem to be needed.
+            //        CFGCONbits.IOLOCK = 1;            // lock PPS
+            //        SYSKEY = 0x33333333;
+            // End of seemingly unneeded lock code
+
+        #endif
+
+    	//*	Init UART
+    	//*	set baudrate and enable USART receiver and transmiter without interrupts
+    	UMODE	=	(UART_ENABLE);
+        UMODEbits.UEN = flowc ? 2 : 0;
+    	USTA	=	(UART_RX_ENABLE | UART_TX_ENABLE);
+    	UBRG	=	((F_PBUS / (16 * baudr))-1);	// calculate actual BAUD generate value.
+
+    	//*	ok, the serial port is initialized, clear any data that may be there
+    	while (USTAbits.URXDA)
+    	{
+    	    byte value = 0;
+    		value = URXREG;
+    	}
+    }
+
+    static inline void __attribute__((always_inline)) UninitUARTInterface(void)
+    {
+        // make sure we transmitted our last byte before closeing
+        while (!USTAbits.TRMT);
+
+        // disable the UART
+        UMODE = 0;
+    }
 
 //************************************************************************
 #elif defined(_BOARD_CEREBOT_32MX7_)
